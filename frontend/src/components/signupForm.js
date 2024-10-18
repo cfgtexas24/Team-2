@@ -31,7 +31,6 @@ const useFormField = () => {
     id: itemContext.id,
     name: fieldContext.name,
     formItemId: `${itemContext.id}-form-item`,
-    formDescriptionId: `${itemContext.id}-form-item-description`,
     formMessageId: `${itemContext.id}-form-item-message`,
   };
 };
@@ -56,7 +55,7 @@ const FormLabel = forwardRef(({ className, ...props }, ref) => {
   return (
     <label
       ref={ref}
-      className={cn("block text-lg font-medium text-brown-700", className)} // Warm brown color for label
+      className={cn("block text-lg font-medium text-black", className)} // Change text color to black
       htmlFor={formItemId}
       {...props}
     />
@@ -66,32 +65,18 @@ FormLabel.displayName = "FormLabel";
 
 // Form control component (using <input> directly)
 const FormControl = forwardRef(({ children, ...props }, ref) => {
-  const { formItemId, formDescriptionId, formMessageId } = useFormField();
+  const { formItemId, formMessageId } = useFormField();
   return (
     <input
       ref={ref}
       id={formItemId}
-      aria-describedby={`${formDescriptionId} ${formMessageId}`}
-      className="w-full px-3 py-2 rounded-md border border-brown-300 bg-beige-100 text-brown-800 focus:outline-none focus:border-brown-500"
+      aria-describedby={formMessageId}
+      className="w-full px-3 py-2 rounded-md border border-primary bg-white text-black focus:outline-none focus:border-primary"
       {...props}
     />
   );
 });
 FormControl.displayName = "FormControl";
-
-// Form description component
-const FormDescription = forwardRef(({ className, ...props }, ref) => {
-  const { formDescriptionId } = useFormField();
-  return (
-    <p
-      ref={ref}
-      id={formDescriptionId}
-      className={cn("text-sm text-brown-500", className)} // Use warm brown for descriptions
-      {...props}
-    />
-  );
-});
-FormDescription.displayName = "FormDescription";
 
 // Form message component (for error messages)
 const FormMessage = forwardRef(({ className, children, ...props }, ref) => {
@@ -128,34 +113,53 @@ const Form = ({ onSubmit, children }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="p-6 space-y-6 bg-beige-50 rounded-lg shadow-lg">
+    <form
+      onSubmit={handleSubmit}
+      className="p-6 space-y-6 bg-white rounded-lg shadow-lg" // Set inner form background color to white
+    >
       {React.Children.map(children, (child) =>
         React.cloneElement(child, { onChange: handleChange })
       )}
+      <button
+        type="submit"
+        className="w-full px-4 py-2 mt-4 font-semibold text-white bg-primary rounded-md hover:bg-opacity-90 focus:ring-4 focus:ring-primary" // Set submit button color to primary
+      >
+        Submit
+      </button>
     </form>
   );
-};
-
-// Export all components
-export {
-  Form,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormControl,
-  FormDescription,
-  FormMessage,
 };
 
 // Default export for signup form example
 const SignupForm = () => {
   const [error, setError] = useState(null);
+  const questions = [
+    { name: "race", label: "Race" },
+    { name: "ethnicity", label: "Ethnicity" },
+    { name: "gender", label: "Gender" },
+    { name: "age", label: "Age" },
+    { name: "nationality", label: "Nationality" },
+    { name: "language", label: "Preferred Language" },
+    { name: "religion", label: "Religion" },
+    { name: "sexual_orientation", label: "Sexual Orientation" },
+    { name: "disability", label: "Do you have a disability?" },
+    { name: "marital_status", label: "Marital Status" },
+    { name: "education_level", label: "Education Level" },
+    { name: "employment_status", label: "Employment Status" },
+    { name: "income_level", label: "Income Level" },
+    { name: "veteran_status", label: "Veteran Status" },
+    { name: "housing_status", label: "Housing Status" },
+    { name: "community_involvement", label: "Community Involvement" },
+    { name: "political_affiliation", label: "Political Affiliation" },
+    { name: "cultural_background", label: "Cultural Background" },
+    { name: "health_status", label: "Health Status" },
+  ]; // Expanded array of questions
 
   const handleSubmit = (formData) => {
     console.log("Form Data:", formData);
 
     // Example validation for empty fields
-    if (!formData.race || !formData.ethnicity || !formData.gender) {
+    if (Object.values(formData).some((value) => !value)) {
       setError("All fields are required");
     } else {
       setError(null);
@@ -164,42 +168,19 @@ const SignupForm = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen">
-      <div className="w-3/5">
+    <div className="flex justify-center items-center h-screen bg-white"> {/* Set outer background color to white */}
+      <div className="w-2/5"> {/* Set width to 2/5 of the screen */}
+        <h2 className="text-2xl font-bold text-black mb-4 text-center">Profile Information</h2> {/* Header for the form */}
         <Form onSubmit={handleSubmit}>
-          <FormField name="race">
-            <FormItem className="space-y-1">
-              <FormLabel>Race</FormLabel>
-              <FormControl type="text" name="race" />
-              <FormDescription>Enter your race.</FormDescription>
-              {error && <FormMessage>{error}</FormMessage>}
-            </FormItem>
-          </FormField>
-
-          <FormField name="ethnicity">
-            <FormItem className="space-y-1">
-              <FormLabel>Ethnicity</FormLabel>
-              <FormControl type="text" name="ethnicity" />
-              <FormDescription>Enter your ethnicity.</FormDescription>
-              {error && <FormMessage>{error}</FormMessage>}
-            </FormItem>
-          </FormField>
-
-          <FormField name="gender">
-            <FormItem className="space-y-1">
-              <FormLabel>Gender</FormLabel>
-              <FormControl type="text" name="gender" />
-              <FormDescription>Enter your gender.</FormDescription>
-              {error && <FormMessage>{error}</FormMessage>}
-            </FormItem>
-          </FormField>
-
-          <button
-            type="submit"
-            className="w-full px-4 py-2 mt-4 font-semibold text-white bg-brown-700 rounded-md hover:bg-brown-600 focus:ring-4 focus:ring-brown-300"
-          >
-            Submit
-          </button>
+          {questions.map((question) => (
+            <FormField key={question.name} name={question.name}>
+              <FormItem className="space-y-1">
+                <FormLabel>{question.label}</FormLabel>
+                <FormControl type="text" name={question.name} />
+                {error && <FormMessage>{error}</FormMessage>}
+              </FormItem>
+            </FormField>
+          ))}
         </Form>
       </div>
     </div>
