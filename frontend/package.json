@@ -43,10 +43,13 @@
   },
   "devDependencies": {
     "tailwindcss": "^3.4.14"
-  }, "compilerOptions": {
+  },
+  "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"]
+      "@/*": [
+        "./*"
+      ]
     }
   }
 }
