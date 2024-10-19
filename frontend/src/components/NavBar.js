@@ -3,11 +3,17 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope, faGraduationCap, faUser, faCalendar, faNewspaper } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import image from '../assets/image.png'; // Make sure to include the file extension
+import { useLocation } from 'react-router-dom';
+
 
 function Navbar() {
   const [showNavbar, setShowNavbar] = useState(false);
+  const location = useLocation();
+
+  
 
   useEffect(() => {
+    
     const handleMouseMove = (event) => {
       const windowHeight = window.innerHeight;
       const mouseY = event.clientY;
@@ -24,6 +30,10 @@ function Navbar() {
       window.removeEventListener('mousemove', handleMouseMove);
     };
   }, []);
+
+  if (location.pathname === '/adminhome') {
+    return null;  // Return nothing, which effectively hides the Navbar
+  }
 
   return (
     <div className="Nav">

@@ -1,8 +1,43 @@
-import React from "react";
+import React, { useState } from "react";
 import signupPageImg from "../assets/signupPageImg.png";
 import { Link } from "react-router-dom";
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+
 
 function SignIn() {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const navigate = useNavigate();
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            // Send the POST request to the Flask backend
+            const response = await axios.post('http://127.0.0.1:5000/signin', {
+              email: email,
+              password: password
+            });
+      
+            // Check if the response contains valid data
+            if (!response.data) {
+              alert('Invalid login'); // Display an alert for invalid login
+            } else {
+              // If the user is an admin, navigate to the admin route
+              if (response.data.type === 'admin') {
+                navigate('/adminhome');  // Replace with your actual admin route
+              } else {
+                // Otherwise, navigate to a different route for non-admin users
+                navigate('/calendar');  // Replace with your actual user route
+              }
+            }
+      
+          } catch (error) {
+            console.error('Error during sign-in:', error);
+            alert('An error occurred while trying to sign in.');
+          }
+      };
+
   return (
     <div className="flex min-h-screen">
       <div className="w-1/2 bg-white flex items-center justify-center">
@@ -19,7 +54,7 @@ function SignIn() {
           <p className="mb-6 text-gray-600">
             Sign In for free to access any of our products
           </p>
-          <form>
+          <form onSubmit={handleSubmit}>
             <div className="mb-6">
               <label className="block text-gray-600 mb-2">
                 Email address
@@ -28,6 +63,8 @@ function SignIn() {
                 type="email"
                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                 placeholder="Email address"
+                value={email} // Bind the input to email state
+                onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </div>
@@ -39,6 +76,8 @@ function SignIn() {
                 type="password"
                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                 placeholder="Password"
+                value={password} // Bind the input to password state
+                onChange={(e) => setPassword(e.target.value)} 
                 required
               />
             </div>
