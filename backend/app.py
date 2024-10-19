@@ -110,7 +110,6 @@ def get_questions():
 
         # Close the connection
         cursor.close()
-        conn.close()
 
         # Return the questions in JSON format
         return jsonify(questions)
