@@ -1,9 +1,11 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, session
 import psycopg2
 from psycopg2 import sql
 import os
 from dotenv import load_dotenv
 from pathlib import Path
+import openai
+
 
 app = Flask(__name__)
 
@@ -12,6 +14,8 @@ env_path = Path('..') / '.env'
 load_dotenv(dotenv_path=env_path)
 
 # Database connection parameters
+openai.api_key = os.getenv("OPENAI_API_KEY")
+app.secret_key = os.getenv("FLASK_SECRET_KEY", "supersecretkey")
 db_user = os.getenv("USER")
 db_password = os.getenv("PASS")
 db_host = os.getenv("HOST")
@@ -107,6 +111,8 @@ def get_questions():
             }
             questions.append(question)
 
+        # Close the connection
+        cursor.close()
         conn.close()
 
         # Return the questions in JSON format
@@ -114,60 +120,7 @@ def get_questions():
 
     except Exception as error:
         return jsonify({"error": str(error)})
-    
-# route to return a single client by id
-@app.route('/client/<int:id>', methods=['GET'])
-def get_client(id):
-    try:
-        # Establish the database connection (use connect_db function as in the previous solution)
-        cursor = conn.cursor()
 
-        # Use a LEFT JOIN to fetch data from both tables in a single query
-        query = """
-        SELECT u.id, u.email, u.first_name, u.last_name, u.address, u.phone, u.dob,
-               c.emergency_contact, c.homelessness, c.depression, c.employment_status, 
-               c.dependencies, c.pregnancy_start
-        FROM users u
-        LEFT JOIN client_info c ON u.id = c.user_id
-        WHERE u.id = %s;
-        """
-        
-        # Execute the combined query
-        cursor.execute(query, (id,))
-        data = cursor.fetchone()
-        print(f"Data fetched: {data}")
-
-        if not data:
-            return jsonify({"error": "User not found"}), 404  # Explicitly return 404 if no user found
-
-        # Prepare the response with both user and client_info data
-        response = {
-            "user": {
-                "id": data[0],
-                "email": data[1],
-                "first_name": data[2],
-                "last_name": data[3],
-                "address": data[4],
-                "phone": data[5],
-                "dob": data[6]
-            },
-            "client_info": "No client information available" if data[7] is None else {
-                "emergency_contact": data[7],
-                "homelessness": data[8],
-                "depression": data[9],
-                "employment_status": data[10],
-                "dependencies": data[11],
-                "pregnancy_start": data[12]
-            }
-        }
-
-        cursor.close()
-
-        return jsonify(response), 200  # Return a 200 status code
-
-    except Exception as error:
-        print(f"Error occurred: {error}")
-        return jsonify({"error": str(error)}), 500  # Return 500 for server errors
 
 if __name__ == '__main__':
     app.run(debug=True)
