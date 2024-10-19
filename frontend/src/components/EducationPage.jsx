@@ -5,6 +5,7 @@ import courseImage2 from '../assets/video2.jpg';
 import courseImage3 from '../assets/video3.jpg';
 import courseImage4 from '../assets/video4.jpeg';
 
+// Course card components to display course details
 const CourseCard = ({ image, title, videoUrl }) => {
   return (
     <div className="bg-white rounded-lg shadow-lg overflow-hidden w-80 h-200 transition-transform duration-300 transform hover:scale-105 hover:shadow-xl">
@@ -24,7 +25,10 @@ const CourseCard = ({ image, title, videoUrl }) => {
   );
 };
 
+// Education component to display all the courses
 const Education = () => {
+
+  // Array of courses with image, title and video URL
   const courses = [
     {
       image: courseImage1,
@@ -48,6 +52,12 @@ const Education = () => {
     }
   ];
 
+
+  /*  This component renders an educational section featuring a title, a subtitle, 
+  a series of category buttons, and a grid layout for displaying course cards. 
+  The layout is responsive. It adjusts the number of columns based on the screen size. 
+  Each course card is generated dynamically from an array of course data, 
+  which includes images, titles, and video URLs for further learning. */
   return (
     <div className="bg-gray-100 min-h-screen flex flex-col items-center p-10">
       <h1 className="text-3xl font-bold mb-8">All the skills you need in one place</h1>

@@ -1,18 +1,19 @@
 import React from "react";
 import signupPageImg from "../assets/signupPageImg.png";
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom"; // Import the Link component from React Router
 
 function SignUp() {
   return (
     <div className="flex min-h-screen">
       <div className="w-1/2 bg-white flex items-center justify-center">
-        <img
-          src={signupPageImg}
-          alt="Sign Up"
-          className="max-w-full max-h-full object-contain"
+        <img 
+          src={signupPageImg} // Use the imported image on the left side of the screen
+          alt="Sign Up" // Provide an alt text for the image
+          className="max-w-full max-h-full object-contain" // Add classes to style the image and ensure it fits the container
         />
       </div>
 
+      {/* Copy of SignIn logic, just changed to fit SignOut purposes: Logic remains the same */}
       <div className="w-1/2 bg-white flex items-center justify-center">
         <div className="max-w-md w-full p-10">
           <h2 className="text-3xl mb-6 text-gray-700">Sign up</h2>

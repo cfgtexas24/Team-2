@@ -2,9 +2,12 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 function Contact() {
+  // State to store the user message
   const [message, setMessage] = useState('');
+  // State to store the chat history
   const [chatHistory, setChatHistory] = useState([]);
 
+  // Function to handle sending a message
   const handleSendMessage = async (e) => {
     e.preventDefault();
 
@@ -18,15 +21,25 @@ function Contact() {
     try {
       // Make a request to your backend to send the message to OpenAI
       const response = await axios.post('http://localhost:5000/chat', {
-        message,
+        message,  // Send current message
       });
+
+      // Add the bot response to the chat history
       const botMessage = { sender: 'bot', text: response.data.reply };
-      setChatHistory((prev) => [...prev, botMessage]);
+      setChatHistory((prev) => [...prev, botMessage]); // Append the bot message to the chat history
     } catch (error) {
-      console.error("Error fetching the AI response:", error);
+      console.error("Error fetching the AI response:", error); // Logs an error if there are any
     }
   };
 
+  /* This React component implements a messaging interface that allows users to send and receive messages.
+  Key Features:
+  - Users can type their messages into an input field and send them by clicking the "Send" button.
+  - Messages sent by the user and responses from a bot are displayed in a scrollable chat area, with distinct styles to differentiate between the two.
+  - User messages appear on the right with a darker background and white text.
+  - Bot messages appear on the left with a lighter background and darker text.
+  - The component is designed to be centered on the screen and adjusts its layout based on screen size, ensuring usability on various devices.
+  - When a message is sent, an asynchronous request is made to a backend service (not shown in this snippet) to process the message, enabling real-time interactions. */
   return (
     <div className="flex justify-center items-center h-screen bg-white">
       <div className="w-3/5 h-4/5 flex flex-col bg-white border border-gray-300 rounded-lg shadow-lg">
