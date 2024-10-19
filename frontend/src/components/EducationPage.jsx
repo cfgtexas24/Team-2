@@ -12,7 +12,7 @@ import courseImage8 from '../assets/video8.jpg';
 // Course card component
 const CourseCard = ({ image, title, videoUrl }) => {
   return (
-    <div className="bg-white rounded-lg shadow-lg overflow-hidden w-80 h-200 transition-transform duration-300 transform hover:scale-105 hover:shadow-xl">
+    <div className="bg-white rounded-lg shadow-lg overflow-hidden w-full sm:w-64 h-auto transition-transform duration-300 transform hover:scale-105 hover:shadow-xl">
       <a href={videoUrl} target="_blank" rel="noopener noreferrer">
         <div className="relative">
           <img 
@@ -23,7 +23,7 @@ const CourseCard = ({ image, title, videoUrl }) => {
         </div>
       </a>
       <div className="p-4">
-        <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
+        <h3 className="text-base sm:text-lg font-semibold text-gray-900">{title}</h3>
       </div>
     </div>
   );
@@ -107,16 +107,16 @@ const Education = () => {
   };
 
   return (
-    <div className="bg-gray-100 min-h-screen flex flex-col items-center p-10">
-      <h1 className="text-3xl font-bold mb-8">All the skills you need in one place</h1>
-      <p className="text-gray-600 mb-4 text-center">How to succeed Postpartum.</p>
+    <div className="bg-gray-100 min-h-screen flex flex-col items-center p-4 sm:p-10">
+      <h1 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-8">All the skills you need in one place</h1>
+      <p className="text-gray-600 mb-4 text-center text-sm sm:text-base">How to succeed Postpartum.</p>
 
-      <div className="flex space-x-4 mb-8 overflow-x-auto whitespace-nowrap">
+      <div className="flex space-x-2 sm:space-x-4 mb-4 sm:mb-8 overflow-x-auto px-4 sm:px-6 py-2 w-full max-w-full whitespace-nowrap">
         {skills.map((skill) => (
           <button
             key={skill}
             onClick={() => handleSkillClick(skill)}
-            className={`px-4 py-1 rounded-full text-sm font-semibold text-white transition-transform duration-300 hover:scale-105 ${
+            className={`px-2 sm:px-4 py-1 rounded-full text-xs sm:text-sm font-semibold text-white transition-transform duration-300 hover:scale-105 ${
               selectedSkill === skill ? 'bg-[#A26B61]' : 'bg-[#8f5749]'
             }`}
           >
@@ -125,14 +125,14 @@ const Education = () => {
         ))}
         <button
           onClick={handleShowAllClick}
-          className="px-4 py-1 rounded-full text-sm font-semibold text-white bg-gray-500 transition-transform duration-300 hover:scale-105"
+          className="px-2 sm:px-4 py-1 rounded-full text-xs sm:text-sm font-semibold text-white bg-gray-500 transition-transform duration-300 hover:scale-105"
         >
           Show All
         </button>
-        <FaArrowRight className="text-gray-500 self-center ml-2" />
+        <FaArrowRight className="text-gray-500 self-center ml-2 hidden sm:block" />
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
         {courses
           .filter(course => !selectedSkill || course.skill === selectedSkill)
           .map((course, index) => (
