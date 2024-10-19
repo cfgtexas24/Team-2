@@ -11,7 +11,7 @@ function Navbar() {
     </header>
     <footer className="fixed bottom-0 w-full bg-primary py-4">
       <nav className="flex justify-center space-x-10">
-        <Link to="/schedule" className="text-white hover:text-gray-300 transform hover:scale-110 transition-transform duration-200"> {/* Link for the schedule page */}
+        <Link to="/calendar" className="text-white hover:text-gray-300 transform hover:scale-110 transition-transform duration-200"> {/* Link for the schedule page */}
           <FontAwesomeIcon icon={faCalendar} size="2x" />
         </Link>
         <Link to="/contact" className="text-white hover:text-gray-300 transform hover:scale-110 transition-transform duration-200">

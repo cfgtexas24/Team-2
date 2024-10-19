@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'; // Import React Router components
 import './App.css';
 import SignupForm from './components/SignupForm';
-import LandingPage from './components/Calendar';
+import Calendar from './components/Calendar';
 import Navbar from './components/NavBar';
 
 function App() {
@@ -12,7 +12,7 @@ function App() {
         <header className="App-header">
           <Navbar /> {/* Render the Navbar */}
           <Routes>
-            <Route path="/" element={<LandingPage />} /> {/* Default route */}
+            <Route path="/calendar" element={<Calendar />} /> {/* Default route */}
             <Route path="/signup" element={<SignupForm />} /> {/* Signup page */}
           </Routes>
         </header>
