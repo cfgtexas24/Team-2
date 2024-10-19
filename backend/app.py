@@ -56,6 +56,44 @@ except Exception as error:
 def hash_string(input_string):
     return hashlib.sha256(input_string.encode('utf-8')).hexdigest()
 
+@app.route('/signup', methods=['POST'])
+def signup():
+    data = request.json
+    input_email = data.get('email')
+    input_password = data.get('password')
+
+    if not input_email or not input_password:
+        return jsonify({"error": "Email and password are required"}), 400
+
+    # Hash the input password
+    hashed_input_password = hash_string(input_password)
+
+    try:
+        cursor = conn.cursor()
+
+        # Query to check if the user already exists
+        query = sql.SQL("SELECT * FROM users WHERE email = %s")
+        cursor.execute(query, (input_email,))
+
+        user = cursor.fetchone()
+
+        if user:
+            # User already exists
+            return jsonify({"error": "User with this email already exists"}), 409  # Conflict
+
+        # Insert the new user into the users table
+        insert_query = sql.SQL("INSERT INTO users (email, type, pass_hash) VALUES (%s, %s, %s)")
+        cursor.execute(insert_query, (input_email, "client", hashed_input_password))
+
+        # Commit the transaction to the database
+        conn.commit()
+
+        return '', 201  # Created, no content returned
+
+    except psycopg2.Error as e:
+        return jsonify({"error": str(e)}), 500  # Internal server error
+
+
 @app.route('/signin', methods=['POST'])
 def signin():
     data = request.json
