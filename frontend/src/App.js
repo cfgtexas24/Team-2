@@ -1,18 +1,23 @@
 import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'; // Import React Router components
 import './App.css';
-import SignupForm from './components/SignupForm.js'; // PascalCase for component names
-import LandingPage from './components/LandingPage.js'; // PascalCase for component names
-import NavBar from './components/NavBar.js'; // PascalCase for component names
+import SignupForm from './components/SignupForm';
+import LandingPage from './components/LandingPage';
+import Navbar from './components/NavBar';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        {/* Render the LandingPage component */}
-        <NavBar/>
-        <LandingPage />
-      </header>
-    </div>
+    <Router>
+      <div className="App">
+        <header className="App-header">
+          <Navbar /> {/* Render the Navbar */}
+          <Routes>
+            <Route path="/" element={<LandingPage />} /> {/* Default route */}
+            <Route path="/signup" element={<SignupForm />} /> {/* Signup page */}
+          </Routes>
+        </header>
+      </div>
+    </Router>
   );
 }
 
