@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 const Calendar = () => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
   const [currentDate, setCurrentDate] = useState(new Date());
+  const [confirmationMessage, setConfirmationMessage] = useState('');
 
   // Array of available dates for demonstration purposes
   const availableDates = [23, 24, 25, 26, 29, 30];
@@ -18,6 +19,7 @@ const Calendar = () => {
   const handleDateSelect = (date) => {
     setSelectedDate(date); // Set the selected date
     setSelectedTime(null); // Reset time selection on new date select
+    setConfirmationMessage(''); // Clear confirmation message on new selection
   };
 
   // Handler for time selection
@@ -25,13 +27,14 @@ const Calendar = () => {
     setSelectedTime(time); // Set the selected time
   };
 
-  
+  // Handler for confirming the reservation
+  const handleConfirmReservation = () => {
+    if (selectedDate && selectedTime) {
+      setConfirmationMessage('Appointment booked!'); // Set the confirmation message
+    }
+  };
+
   return (
-    // Returns a JSX structure for a calendar reservation interface that allows users to:
-    // 1. Select an available date from a grid of buttons.
-    // 2. View and select available times for the selected date.
-    // 3. Display a confirmation message with the selected date and time.
-    // 4. Include a button to confirm the reservation.
     <div className="min-h-screen bg-gray-100 flex justify-center items-center">
       <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-lg">
         <h2 className="text-2xl font-bold mb-4 text-center">Appointment Reservation Page</h2>
@@ -45,10 +48,10 @@ const Calendar = () => {
                 className={`p-2 rounded-lg text-center ${
                   availableDates.includes(day)
                     ? selectedDate === day
-                      ? 'bg-blue-500 text-white'
+                      ? 'bg-[#A26B61] text-white hover:bg-[#F4E8E7]' // Updated hover color for selected date
                       : day === today
                       ? 'bg-green-500 text-white' // Highlight the current day
-                      : 'bg-gray-200 hover:bg-blue-200'
+                      : 'bg-[#F4E8E7] hover:bg-[#A26B61]' // Updated hover color for available dates
                     : 'bg-gray-100 text-gray-400'
                 }`}
                 onClick={() => availableDates.includes(day) && handleDateSelect(day)}
@@ -68,8 +71,8 @@ const Calendar = () => {
                   key={time}
                   className={`p-2 rounded-lg text-center ${
                     selectedTime === time
-                      ? 'bg-blue-500 text-white'
-                      : 'bg-gray-200 hover:bg-blue-200'
+                      ? 'bg-[#A26B61] text-white hover:bg-[#F4E8E7]' // Updated hover color for selected time
+                      : 'bg-[#F4E8E7] hover:bg-[#A26B61]' // Updated hover color for available times
                   }`}
                   onClick={() => handleTimeSelect(time)}
                 >
@@ -85,9 +88,18 @@ const Calendar = () => {
             <p className="text-center font-medium">
               You have selected {selectedDate} {currentMonth} {currentYear} at {selectedTime}.
             </p>
-            <button className="mt-4 w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600">
+            <button 
+              className="mt-4 w-full bg-[#A26B61] text-white py-2 rounded-lg hover:bg-[#F4E8E7]" // Updated confirm button hover color
+              onClick={handleConfirmReservation}
+            >
               Confirm Reservation
             </button>
+          </div>
+        )}
+
+        {confirmationMessage && (
+          <div className="mt-4 text-center text-green-600 font-semibold">
+            {confirmationMessage} {/* Display the confirmation message */}
           </div>
         )}
       </div>
