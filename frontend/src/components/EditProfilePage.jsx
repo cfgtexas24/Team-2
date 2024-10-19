@@ -15,8 +15,8 @@ const EditProfilePage = ({ formData, setFormData }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setFormData(localFormData); // Update the main form data
-    navigate('/profile'); // Redirect back to profile page after submission
+    setFormData(localFormData); 
+    navigate('/profile'); 
   };
 
   return (
@@ -26,14 +26,25 @@ const EditProfilePage = ({ formData, setFormData }) => {
         <form onSubmit={handleSubmit}>
           {Object.keys(localFormData).map((field) => (
             <div className="mb-4" key={field}>
-              <label
-                className="block text-gray-700 text-sm font-bold mb-2"
-                htmlFor={field}
-              >
+              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor={field}>
                 {field.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
               </label>
+              <input
+                type="text"
+                id={field}
+                name={field}
+                value={localFormData[field]}
+                onChange={handleInputChange}
+                className="appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
+              />
             </div>
           ))}
+          <button
+            type="submit"
+            className="w-full p-3 text-center bg-blue-500 text-white rounded-lg mt-4"
+          >
+            Submit
+          </button>
         </form>
       </div>
     </div>

@@ -1,41 +1,12 @@
-import React, { useState } from 'react';
-import { FaBell, FaCog, FaUserEdit } from 'react-icons/fa';
+import React from 'react';
+import { FaUserEdit } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 
-const ProfilePage = () => {
-  const [formData, setFormData] = useState({
-    race: 'Hispanic or Latino',
-    ethnicity: 'Puerto Rican',
-    gender: 'Female',
-    age: '30',
-    language: 'Spanish, English',
-    disability: 'None',
-    education_level: 'Bachelor\'s Degree',
-    employment_status: 'Employed full-time',
-    housing_status: 'Own Home',
-  });
+const ProfilePage = ({ formData }) => {
+  const navigate = useNavigate();
 
-  const [isEdited, setIsEdited] = useState({
-    race: false,
-    ethnicity: false,
-    gender: false,
-    age: false,
-    language: false,
-    disability: false,
-    education_level: false,
-    employment_status: false,
-    housing_status: false,
-  });
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-    setIsEdited((prevState) => ({
-      ...prevState,
-      [name]: true,
-    }));
+  const handleEditClick = () => {
+    navigate('/editProfilePage');
   };
 
   return (
@@ -54,33 +25,22 @@ const ProfilePage = () => {
           </div>
 
           <h2 className="mt-4 text-xl font-semibold">Puerto Rico</h2>
-          <p className="text-gray-500">youremail@domain.com | +01 234 567 89</p>
+          <p className="text-gray-500">{formData.email || 'youremail@domain.com'} | {formData.phone || '+01 234 567 89'}</p>
 
           <div className="mt-6 w-full">
-            <button className="w-full p-3 text-left bg-gray-50 rounded-lg mb-4 flex justify-between items-center">
+            <button
+              className="w-full p-3 text-left bg-gray-50 rounded-lg mb-4 flex justify-between items-center"
+              onClick={handleEditClick} 
+            >
               <span>Edit profile information</span>
               <FaUserEdit className="text-gray-500" />
             </button>
             <div className="mt-4">
-              <form>
-                {Object.keys(formData).map((field) => (
-                  <div className="mb-4" key={field}>
-                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor={field}>
-                      {field.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
-                    </label>
-                    <input
-                      type="text"
-                      id={field}
-                      name={field}
-                      value={formData[field]}
-                      onChange={handleInputChange}
-                      className={`appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline ${
-                        isEdited[field] ? 'text-black' : 'text-gray-500'
-                      }`}
-                    />
-                  </div>
-                ))}
-              </form>
+              <p><strong>Race:</strong> {formData.race}</p>
+              <p><strong>Ethnicity:</strong> {formData.ethnicity}</p>
+              <p><strong>Gender:</strong> {formData.gender}</p>
+              <p><strong>Age:</strong> {formData.age}</p>
+              <p><strong>Language:</strong> {formData.language}</p>
             </div>
           </div>
         </div>

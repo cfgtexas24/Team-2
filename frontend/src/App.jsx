@@ -1,6 +1,6 @@
 import './index.css';
 import ProfilePage from './components/ProfilePage';
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'; // Import React Router components
 import './App.css';
 import SignupForm from './components/SignupForm';
@@ -11,11 +11,25 @@ import Education from './components/EducationPage';
 import Contact from './components/Messaging';
 import SignIn from './components/SignIn';
 import AdminHome from './components/AdminHome';
+import EditProfilePage from './components/EditProfilePage';
 
 // Main App component that manages the routing and layout of the application
 function App() {
+
+  const [formData, setFormData] = useState({
+    race: 'Hispanic or Latino',
+    ethnicity: 'Puerto Rican',
+    gender: 'Female',
+    age: '30',
+    language: 'Spanish, English',
+    disability: 'None',
+    education_level: "Bachelor's Degree",
+    employment_status: 'Employed full-time',
+    housing_status: 'Own Home'
+  });
+
+
   return (
-    // Router component that manages the routing of the application
     <Router>
       <div className="App">
         <header className="App-header">
@@ -25,10 +39,11 @@ function App() {
             <Route path="/signin" element={<SignIn />} />
             <Route path="/calendar" element={<Calendar />} /> {/* Default route */}
             <Route path="/education" element={<Education />} /> {/* Signup page */}
-            <Route path="/profile" element={<ProfilePage />} /> {/* Signup page */}
+            <Route path="/profile" element={<ProfilePage formData={formData} />} /> {/* Signup page */}
             <Route path="/form" element={<SignupForm />} /> {/* Signup page */}
             <Route path="/contact" element={<Contact />} /> {/* Signup page */}
             <Route path="adminhome" element={<AdminHome/>}/>
+            <Route path="/editProfilePage" element={<EditProfilePage formData={formData} />}/>
           </Routes>
         </header>
       </div>
