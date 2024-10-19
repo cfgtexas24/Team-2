@@ -2,14 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope, faGraduationCap, faUser, faCalendar, faNewspaper } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
-import image from '../assets/image.png'; // Replace with actual logo image
+import image from '../assets/image.png'; // Make sure to include the file extension
+import { useLocation } from 'react-router-dom';
+
 
 function Navbar() {
   // State to determine whether to show the navbar
   const [showNavbar, setShowNavbar] = useState(false);
+  const location = useLocation();
+
+  
 
   useEffect(() => {
-    // Function to handle mouse movement
+    
     const handleMouseMove = (event) => {
       const windowHeight = window.innerHeight; // Get the height of the window
       const mouseY = event.clientY; // Get the y (vertical) position of the mouse
@@ -27,9 +32,10 @@ function Navbar() {
     };
   }, []); // Empty dependency array to run the effect only once
 
-  /* This component renders a navigation bar with a fixed header at the top and a fixed footer at the bottom.
-  The header contains a logo, while the footer contains navigation links with icons for different sections.
-  The footer's visibility is toggled based on the user's mouse position on the screen. */
+  if (location.pathname === '/adminhome') {
+    return null;  // Return nothing, which effectively hides the Navbar
+  }
+
   return (
     <div className="Nav">
       {/* Fixed Header */}

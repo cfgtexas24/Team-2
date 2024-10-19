@@ -54,19 +54,47 @@ except Exception as error:
     print(f"Error connecting to the database: {error}")
 
 def hash_string(input_string):
-    # Encode the input string to bytes
-    encoded_string = input_string.encode('utf-8')
-    
-    # Create a SHA-256 hash object
-    sha256_hash = hashlib.sha256()
-    
-    # Update the hash object with the bytes of the encoded string
-    sha256_hash.update(encoded_string)
-    
-    # Get the hexadecimal digest of the hash
-    hashed_output = sha256_hash.hexdigest()
-    
-    return hashed_output
+    return hashlib.sha256(input_string.encode('utf-8')).hexdigest()
+
+@app.route('/signin', methods=['POST'])
+def signin():
+    data = request.json
+    input_email = data.get('email')
+    input_password = data.get('password')
+
+    if not input_email or not input_password:
+        return jsonify({"error": "Email and password are required"}), 400
+
+    # Hash the input password
+    hashed_input_password = hash_string(input_password)
+
+    try:
+        # Establish database connection
+        cursor = conn.cursor()
+
+        # Query to find user by email
+        query = sql.SQL("SELECT * FROM users WHERE email = %s")
+        cursor.execute(query, (input_email,))
+
+        # Fetch user record
+        user = cursor.fetchone()
+
+        if user:
+            # Compare hashed input password with stored hashed password
+            if hashed_input_password == user[2]:
+                # If the password matches, return the user id and type as JSON
+                user_data = {
+                    "id": user[0],
+                    "type": user[3]
+                }
+                return jsonify(user_data), 200
+            else:
+                return jsonify(None), 401  # Unauthorized, incorrect password
+        else:
+            return jsonify(None), 404  # User not found
+
+    except psycopg2.Error as e:
+        return jsonify({"error": str(e)}), 500  # Internal server error
 
 @app.route('/send-email', methods=['POST'])
 def send_email():
@@ -207,7 +235,6 @@ def get_questions():
 
         # Close the connection
         cursor.close()
-        conn.close()
 
         # Return the questions in JSON format
         return jsonify(questions)

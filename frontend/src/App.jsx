@@ -10,6 +10,7 @@ import SignUp from './components/SignUp';
 import Education from './components/EducationPage';
 import Contact from './components/Messaging';
 import SignIn from './components/SignIn';
+import AdminHome from './components/AdminHome';
 function App() {
   return (
     <Router>
@@ -24,6 +25,7 @@ function App() {
             <Route path="/profile" element={<ProfilePage />} /> {/* Signup page */}
             <Route path="/form" element={<SignupForm />} /> {/* Signup page */}
             <Route path="/contact" element={<Contact />} /> {/* Signup page */}
+            <Route path="adminhome" element={<AdminHome/>}/>
           </Routes>
         </header>
       </div>
