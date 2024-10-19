@@ -87,7 +87,7 @@ def add_medical():
         conn.rollback()  # Rollback the transaction if there's an error
         return jsonify({"error": str(e)}), 500
     
-    @app.route('/questions', methods=['GET'])
+@app.route('/questions', methods=['GET'])
 def get_questions():
     try:
         # Connect to the database
