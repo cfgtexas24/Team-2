@@ -42,7 +42,7 @@ def index():
 
 
 @app.route('/add_medical', methods=['POST'])
-def add_user():
+def add_medical():
     data = request.get_json()  # Get the JSON data from the request
     
     # Extract fields from the request (ensure they're provided or set defaults)
