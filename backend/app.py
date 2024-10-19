@@ -415,7 +415,7 @@ def add_column():
         # Step 1: Add a new column to the client_info table
 
         # Step 2: Insert the corresponding question record
-        alter_table_query = f"ALTER TABLE client_info ADD COLUMN {new_column_name} VARCHAR;"
+        alter_table_query = f"ALTER TABLE client_info ADD COLUMN {new_column_name} VARCHAR(255);"
         cursor.execute(alter_table_query)
 
         # Commit the transaction
