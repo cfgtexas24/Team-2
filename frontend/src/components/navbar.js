@@ -1,6 +1,6 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEnvelope, faGraduationCap, faUser, faCalendar, faNewspaper } from '@fortawesome/free-solid-svg-icons';
+import { faEnvelope, faGraduationCap, faUser, faCalendar } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom'; // Import Link for navigation
 
 function Navbar() {
@@ -17,14 +17,11 @@ function Navbar() {
         <Link to="/contact" className="text-white hover:text-gray-300 transform hover:scale-110 transition-transform duration-200">
           <FontAwesomeIcon icon={faEnvelope} size="2x" />
         </Link>
-        <Link to="/education" className="text-white hover:text-gray-300 transform hover:scale-110 transition-transform duration-200">
+        <Link to="/profile" className="text-white hover:text-gray-300 transform hover:scale-110 transition-transform duration-200">
           <FontAwesomeIcon icon={faGraduationCap} size="2x" />
         </Link>
-        <Link to="/profile" className="text-white hover:text-gray-300 transform hover:scale-110 transition-transform duration-200">
+        <Link to="/signup" className="text-white hover:text-gray-300 transform hover:scale-110 transition-transform duration-200">
           <FontAwesomeIcon icon={faUser} size="2x" />
-        </Link>
-        <Link to="/form" className="text-white hover:text-gray-300 transform hover:scale-110 transition-transform duration-200">
-          <FontAwesomeIcon icon={faNewspaper} size="2x" />
         </Link>
       </nav>
     </footer>
