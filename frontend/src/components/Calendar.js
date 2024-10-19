@@ -31,7 +31,7 @@ const Calendar = () => {
   const handleConfirmReservation = () => {
     if (selectedDate && selectedTime) {
       const appointmentDetails = {
-        target_email: 'vvaladez315@gmail.com', // Replace with the user's email or capture it in the form
+        target_email: 'holly.simple4092@eagereverest.com', // Replace with the user's email or capture it in the form
         subject: 'Appointment Confirmation',
         text: `Your appointment is confirmed for ${selectedDate} ${currentMonth} ${currentYear} at ${selectedTime}.`
       };

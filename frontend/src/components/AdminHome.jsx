@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import { 
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, 
-  PieChart, Pie, Cell 
+import { Link } from 'react-router-dom'; // Import Link for navigation
+import {
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
+  PieChart, Pie, Cell
 } from 'recharts';
 
-// Sample data for the Bar Chart (Race Distribution)
+// Sample data for the charts
 const data = [
   { race: 'Black', count: 80 },
   { race: 'Hispanic', count: 50 },
@@ -15,52 +16,74 @@ const data = [
   { race: 'Other', count: 5 },
 ];
 
-// Sample data for the Donut Chart (Income Distribution)
 const donutData = [
   { name: 'High Income', value: 11 },
   { name: 'Middle Income', value: 31 },
   { name: 'Low Income', value: 58 },
 ];
 
-// Sample data for Ethnicity Distribution chart
 const ethnicityData = [
   { name: 'Not Hispanic/Latino', value: 62 },
   { name: 'Hispanic/Latino', value: 36 },
   { name: 'Unreported', value: 2 },
 ];
 
-// Sample data for Unemployment Rate chart
 const unemploymentData = [
   { name: 'Employed', value: 47 },
   { name: 'Unemployed', value: 53 },
 ];
 
-// Color schemes used for different charts
-const COLORS = ['#6C5846', '#a06c5f', '#e6d2c2']; // Colors for income distribution chart
-const ETHNICITY_COLORS = ['#a06c5f', '#8b857c', '#5d4d49']; // Colors for ethnicity chart
-const UNEMPLOYMENT_COLORS = ['#8b857c', '#a06c5f']; // Colors for unemployment chart
+// Color schemes for the charts
+const COLORS = ['#6C5846', '#a06c5f', '#e6d2c2'];
+const ETHNICITY_COLORS = ['#a06c5f', '#8b857c', '#5d4d49'];
+const UNEMPLOYMENT_COLORS = ['#8b857c', '#a06c5f'];
 
 const AdminHome = () => {
-  const [view, setView] = useState('dashboard');  // State to toggle between "dashboard" and "userData"
-  const [userData, setUserData] = useState([]);   // State to store user data
+  const [view, setView] = useState('dashboard'); // State for toggling views
+  const [userData, setUserData] = useState([]);  // State for user data
+  const [searchTerm, setSearchTerm] = useState('');  // State for search input
+  const [highlightedSection, setHighlightedSection] = useState(''); // State to highlight sections
 
-  // Function to fetch user data from the backend
+  // Refs to scroll to different chart sections
+  const raceRef = useRef(null);
+  const incomeRef = useRef(null);
+  const ethnicityRef = useRef(null);
+  const unemploymentRef = useRef(null);
+
+  // Fetch user data from the backend
   const fetchUserData = () => {
-    axios.get('http://localhost:5000/get-user-data')  // Replace with your backend endpoint
-      .then(response => {
-        setUserData(response.data);  // Store fetched data in state
-      })
-      .catch(error => {
-        console.error('Error fetching user data:', error);
-      });
+    axios.get('http://localhost:5000/get-user-data')  // Update with your endpoint
+      .then(response => setUserData(response.data))
+      .catch(error => console.error('Error fetching user data:', error));
   };
 
-  // Handle switching between views
+  // Handle view switch and user data fetching
   const handleViewSwitch = (selectedView) => {
     setView(selectedView);
-    if (selectedView === 'userData') {
-      fetchUserData();  // Fetch user data when "User Data" is selected
+    if (selectedView === 'userData') fetchUserData();
+  };
+
+  // Handle search functionality to scroll to a section
+  const handleSearch = () => {
+    const term = searchTerm.trim().toLowerCase();
+    if (term === 'race distribution') {
+      raceRef.current.scrollIntoView({ behavior: 'smooth' });
+      setHighlightedSection('race');
+    } else if (term === 'income distribution') {
+      incomeRef.current.scrollIntoView({ behavior: 'smooth' });
+      setHighlightedSection('income');
+    } else if (term === 'ethnicity distribution') {
+      ethnicityRef.current.scrollIntoView({ behavior: 'smooth' });
+      setHighlightedSection('ethnicity');
+    } else if (term === 'unemployment rate') {
+      unemploymentRef.current.scrollIntoView({ behavior: 'smooth' });
+      setHighlightedSection('unemployment');
     }
+  };
+
+  // Handle Enter key to trigger search
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') handleSearch();
   };
 
   return (
@@ -71,6 +94,11 @@ const AdminHome = () => {
         <ul>
           <li className="py-2 cursor-pointer" onClick={() => handleViewSwitch('dashboard')}>
             Dashboard
+          </li>
+          <li className="py-2">
+            <Link to="/adminprofile" style={{ color: 'inherit', textDecoration: 'none' }}>
+              Profile
+            </Link>
           </li>
           <li className="py-2 cursor-pointer" onClick={() => handleViewSwitch('userData')}>
             User Data
@@ -83,16 +111,30 @@ const AdminHome = () => {
         {/* Top Bar */}
         <div style={{ height: '70px', backgroundColor: '#ffffff', boxShadow: '0px 1px 5px rgba(0, 0, 0, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 20px' }}>
           <h2 className="text-xl">Admin Dashboard</h2>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <input
+              type="text"
+              className="border p-2 mr-4"
+              placeholder="Search..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              onKeyDown={handleKeyDown}
+            />
+            <Link to="/adminprofile">
+              <div style={{ backgroundColor: '#cccccc', padding: '10px', borderRadius: '50%' }}>
+                Profile
+              </div>
+            </Link>
+          </div>
         </div>
 
-        {/* Conditional Rendering based on selected view */}
+        {/* Main content based on view */}
         <div style={{ padding: '20px' }}>
           {view === 'dashboard' ? (
             <div>
-              {/* Dashboard Content (Graphs) */}
+              {/* Dashboard Content */}
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                {/* Bar Chart Section for Race Distribution */}
-                <div style={{ width: '48%', backgroundColor: '#ffffff', padding: '20px' }}>
+                <div ref={raceRef} style={{ width: '48%', backgroundColor: '#ffffff', padding: '20px', border: highlightedSection === 'race' ? '2px solid #313131' : 'none' }}>
                   <h3 className="text-lg mb-4">Race Distribution</h3>
                   <ResponsiveContainer width="100%" height={300}>
                     <BarChart data={data}>
@@ -106,8 +148,7 @@ const AdminHome = () => {
                   </ResponsiveContainer>
                 </div>
 
-                {/* Donut Chart Section for Income Distribution */}
-                <div style={{ width: '48%', backgroundColor: '#ffffff', padding: '20px' }}>
+                <div ref={incomeRef} style={{ width: '48%', backgroundColor: '#ffffff', padding: '20px', border: highlightedSection === 'income' ? '2px solid #313131' : 'none' }}>
                   <h3 className="text-lg mb-4">Income Distribution</h3>
                   <ResponsiveContainer width="100%" height={320}>
                     <PieChart>
@@ -124,8 +165,7 @@ const AdminHome = () => {
               </div>
 
               <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px' }}>
-                {/* Ethnicity Pie Chart Section */}
-                <div style={{ width: '48%', backgroundColor: '#ffffff', padding: '20px' }}>
+                <div ref={ethnicityRef} style={{ width: '48%', backgroundColor: '#ffffff', padding: '20px', border: highlightedSection === 'ethnicity' ? '2px solid #313131' : 'none' }}>
                   <h3 className="text-lg mb-4">Ethnicity Distribution</h3>
                   <ResponsiveContainer width="100%" height={320}>
                     <PieChart>
@@ -140,8 +180,7 @@ const AdminHome = () => {
                   </ResponsiveContainer>
                 </div>
 
-                {/* Unemployment Rate Pie Chart Section */}
-                <div style={{ width: '48%', backgroundColor: '#ffffff', padding: '20px' }}>
+                <div ref={unemploymentRef} style={{ width: '48%', backgroundColor: '#ffffff', padding: '20px', border: highlightedSection === 'unemployment' ? '2px solid #313131' : 'none' }}>
                   <h3 className="text-lg mb-4">Unemployment Rate</h3>
                   <ResponsiveContainer width="100%" height={320}>
                     <PieChart>
