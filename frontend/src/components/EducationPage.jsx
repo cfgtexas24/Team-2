@@ -4,6 +4,10 @@ import courseImage1 from '../assets/video1.jpg';
 import courseImage2 from '../assets/video2.jpg';
 import courseImage3 from '../assets/video3.jpg';
 import courseImage4 from '../assets/video4.jpeg';
+import courseImage5 from '../assets/video5.png';
+import courseImage6 from '../assets/video6.png';
+import courseImage7 from '../assets/video7.jpg';
+import courseImage8 from '../assets/video8.jpg';
 
 // Course card component
 const CourseCard = ({ image, title, videoUrl }) => {
@@ -65,6 +69,26 @@ const Education = () => {
       title: "How to take care of yourself, Postpartum",
       videoUrl: "https://www.youtube.com/watch?v=3N7zpOvStOA",
       skill: "Postpartum Self-Care"
+    },
+    {
+      image: courseImage5,
+      title: "The Benefits of having a Doula",
+      videoUrl: "https://www.youtube.com/watch?v=FKxY-VUmoOk"
+    },
+    {
+      image: courseImage6,
+      title: "The Benefits of having a Midwife",
+      videoUrl: "https://www.youtube.com/watch?v=sff3mvvQc9U"
+    },
+    {
+      image: courseImage7,
+      title: "Importance of Mental Health after Birth",
+      videoUrl: "https://www.youtube.com/watch?v=K_3NlTtybIA"
+    },
+    {
+      image: courseImage8,
+      title: "Importance of Culture on Birthing Practices",
+      videoUrl: "https://www.youtube.com/watch?v=Gd3OjuKjKVk"
     }
   ];
 
