@@ -343,43 +343,6 @@ def update_client(user_id):
     except Exception as e:
         conn.rollback()  # Rollback the transaction if there's an error
         return jsonify({"error": str(e)}), 500
-    
-
-@app.route('/add_column_and_question', methods=['POST'])
-def add_column_and_question():
-    data = request.get_json()
-    new_column_name = data.get('new_column_name')  # Get the new column name from the request
-    question_text = data.get('question')  # Get the question text
-    user_id = data.get('user_id')  # Assuming you're providing user_id to link with client_info
-
-    if not new_column_name or not question_text or not user_id:
-        return jsonify({"error": "Missing required fields: new_column_name, question, or user_id"}), 400
-
-    try:
-        cursor = conn.cursor()
-
-        # Step 1: Add a new column to the client_info table
-        alter_table_query = f"ALTER TABLE client_info ADD COLUMN {new_column_name} VARCHAR;"
-        cursor.execute(alter_table_query)
-
-        # Step 2: Insert the corresponding question record
-        insert_question_query = """
-        INSERT INTO questions (question, client_field_name, type)
-        VALUES (%s, %s, %s);
-        """
-        cursor.execute(insert_question_query, (question_text, new_column_name, 'varchar'))
-
-        # Commit the transaction
-        conn.commit()
-
-        # Close the cursor
-        cursor.close()
-
-        return jsonify({"message": "Column added and question inserted successfully."}), 201
-
-    except Exception as e:
-        conn.rollback()  # Rollback the transaction if there's an error
-        return jsonify({"error": str(e)}), 500
 
 
 
