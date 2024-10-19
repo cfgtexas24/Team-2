@@ -279,6 +279,86 @@ def get_client(id):
     except Exception as error:
         print(f"Error occurred: {error}")
         return jsonify({"error": str(error)}), 500  # Return 500 for server errors
+    
+@app.route('/update_client/<int:user_id>', methods=['PUT'])
+def update_client(user_id):
+    try:
+        data = request.get_json()
+
+        cursor = conn.cursor()
+
+        # Fetch available columns from client_info table dynamically
+        cursor.execute("SELECT column_name FROM information_schema.columns WHERE table_name = 'client_info' AND column_name != 'user_id';")
+        available_columns = [row[0] for row in cursor.fetchall()]
+
+        # Extract user fields from the incoming data
+        email = data.get('email')
+        pass_hash = data.get('pass_hash')
+        user_type = data.get('type', None)
+        first_name = data.get('first_name', None)
+        last_name = data.get('last_name', None)
+        address = data.get('address', None)
+        phone = data.get('phone', None)
+        dob = data.get('dob', None)
+
+        # Prepare the dynamic update for the users table
+        user_updates = []
+        user_values = []
+
+        if email:
+            user_updates.append("email = %s")
+            user_values.append(email)
+        if pass_hash:
+            user_updates.append("pass_hash = %s")
+            user_values.append(pass_hash)
+        if user_type:
+            user_updates.append("type = %s")
+            user_values.append(user_type)
+        if first_name:
+            user_updates.append("first_name = %s")
+            user_values.append(first_name)
+        if last_name:
+            user_updates.append("last_name = %s")
+            user_values.append(last_name)
+        if address:
+            user_updates.append("address = %s")
+            user_values.append(address)
+        if phone:
+            user_updates.append("phone = %s")
+            user_values.append(phone)
+        if dob:
+            user_updates.append("dob = %s")
+            user_values.append(dob)
+
+        # Only update users if there are fields to update
+        if user_updates:
+            user_update_query = f"UPDATE users SET {', '.join(user_updates)} WHERE id = %s"
+            user_values.append(user_id)
+            cursor.execute(user_update_query, user_values)
+
+        # Filter incoming data based on available columns for client_info
+        client_info_data = {key: value for key, value in data.items() if key in available_columns}
+
+        # If there are fields to update for client_info, construct the dynamic update query
+        if client_info_data:
+            client_info_updates = ', '.join(f"{key} = %s" for key in client_info_data.keys())
+            client_info_values = list(client_info_data.values())
+
+            query = f"UPDATE client_info SET {client_info_updates} WHERE user_id = %s"
+            client_info_values.append(user_id)
+            cursor.execute(query, client_info_values)
+
+        # Commit the transaction
+        conn.commit()
+
+        # Close the cursor
+        cursor.close()
+
+        return jsonify({"message": "Client updated successfully", "user_id": user_id}), 200
+
+    except Exception as e:
+        conn.rollback()  # Rollback the transaction if there's an error
+        return jsonify({"error": str(e)}), 500
 
 
 if __name__ == '__main__':
