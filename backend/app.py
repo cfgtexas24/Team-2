@@ -1,8 +1,9 @@
+from flask import Flask, request, jsonify
 import psycopg2
+from psycopg2 import sql
 import os
 from dotenv import load_dotenv
 from pathlib import Path
-from flask import Flask, jsonify
 
 app = Flask(__name__)
 
@@ -40,7 +41,51 @@ def index():
     return jsonify({"message": "Welcome to the Flask PostgreSQL app!"})
 
 
+@app.route('/add_medical', methods=['POST'])
+def add_user():
+    data = request.get_json()  # Get the JSON data from the request
+    
+    # Extract fields from the request (ensure they're provided or set defaults)
+    email = data.get('email')
+    pass_hash = data.get('pass_hash')
+    user_type = data.get('type', '')  # Optional fields can have defaults
+    first_name = data.get('first_name', '')
+    last_name = data.get('last_name', '')
+    address = data.get('address', '')
+    phone = data.get('phone', '')
+    dob = data.get('dob', None)  # dob can be NULL
 
+    # Validate required fields
+    if not email or not pass_hash:
+        return jsonify({"error": "Missing required fields: email or pass_hash"}), 400
+
+    try:
+        cursor = conn.cursor()
+
+        # Prepare the INSERT SQL query
+        query = """
+        INSERT INTO users (email, pass_hash, type, first_name, last_name, address, phone, dob)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s) RETURNING id;
+        """
+
+        # Execute the query with the data
+        cursor.execute(query, (email, pass_hash, user_type, first_name, last_name, address, phone, dob))
+
+        # Get the newly inserted user's id
+        user_id = cursor.fetchone()[0]
+
+        # Commit the transaction
+        conn.commit()
+
+        # Close the cursor
+        cursor.close()
+
+        # Return the ID of the newly created user
+        return jsonify({"message": "User added successfully", "user_id": user_id}), 201
+
+    except Exception as e:
+        conn.rollback()  # Rollback the transaction if there's an error
+        return jsonify({"error": str(e)}), 500
 
 
 if __name__ == '__main__':
