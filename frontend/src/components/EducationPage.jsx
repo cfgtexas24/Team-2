@@ -12,15 +12,7 @@ const CourseCard = ({ image, title, price, originalPrice, rating, reviews, badge
       <div className="p-4">
         <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
         <div className="flex items-center mt-2">
-          <span className="text-red-500 text-lg font-bold">${price}</span>
-          <span className="text-gray-500 line-through text-sm ml-2">${originalPrice}</span>
-        </div>
-        <div className="flex items-center mt-2 text-yellow-500">
-          <span>⭐ {rating}</span>
-          <span className="ml-1 text-gray-600">({reviews} reviews)</span>
-        </div>
-        <div className={`mt-3 inline-block text-sm px-2 py-1 rounded-full ${badge === 'Bestseller' ? 'bg-yellow-300 text-yellow-900' : 'bg-purple-600 text-white'}`}>
-          {badge}
+
         </div>
       </div>
     </div>
@@ -31,39 +23,19 @@ const Education = () => {
   const courses = [
     {
       image: courseImage1,
-      title: "Workouts for Pregnant Women",
-      price: 15.99,
-      originalPrice: 89.99,
-      rating: 4.5,
-      reviews: 39635,
-      badge: "Bestseller"
+      title: "Workouts for Pregnant Women"
     },
     {
       image: courseImage2,
-      title: "The Complete Nutrition Guide for Pregnant Women",
-      price: 19.99,
-      originalPrice: 99.99,
-      rating: 4.4,
-      reviews: 1652,
-      badge: "Premium"
+      title: "The Complete Nutrition Guide for Pregnant Women"
     },
     {
       image: courseImage3,
-      title: "Nutrition and its impact on Babies",
-      price: 22.99,
-      originalPrice: 84.99,
-      rating: 4.3,
-      reviews: 401,
-      badge: "Premium"
+      title: "Nutrition and its impact on Babies"
     },
     {
       image: courseImage4,
-      title: "How to take care of yourself, Postpartum",
-      price: 13.99,
-      originalPrice: 39.99,
-      rating: 4.4,
-      reviews: 400,
-      badge: "Premium"
+      title: "How to take care of yourself, Postpartum"
     }
   ];
 
