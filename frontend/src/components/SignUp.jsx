@@ -1,6 +1,5 @@
 import React from "react";
 import signupPageImg from "../assets/signupPageImg.png";
-import { Link } from "react-router-dom";
 
 function SignUp() {
   return (
@@ -42,18 +41,17 @@ function SignUp() {
                 required
               />
             </div>
-            <Link to="/form">
             <button
               type="submit"
-              className="w-full py-3 bg-purple-600 text-white rounded-lg font-bold hover:bg-purple-700"
+              className="w-full py-3 bg-[#A26B61] text-white rounded-lg font-bold hover:bg-[#F4E8E7]"
             >
               Sign up
             </button>
-            </Link>
+
           </form>
           <p className="mt-4 text-center text-gray-500">
             Already have an account?{" "}
-            <a href="#" className="text-purple-600 underline">
+            <a href="#" className="[#A26B61]-underline">
               Log in
             </a>
           </p>
