@@ -1,4 +1,4 @@
-import './App.css';
+import './index.css';
 import SignUp from './components/SignUp';
 
 function App() {
