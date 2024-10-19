@@ -15,6 +15,7 @@ import Contact from './components/Messaging';
 import SignIn from './components/SignIn';
 import AdminHome from './components/AdminHome';
 import EditProfilePage from './components/EditProfilePage';
+import AdminProfile from './components/AdminProfile';
 
 // Main App component that manages the routing and layout of the application
 function App() {
@@ -47,6 +48,7 @@ function App() {
             <Route path="/profile" element={<ProfilePage formData={formData} />} />
             <Route path="/form" element={<SignupForm />} />
             <Route path="/contact" element={<Contact />} /> 
+            <Route path="/adminprofile" element={<AdminProfile />}/>
             <Route path="adminhome" element={<AdminHome/>}/>
             <Route path="/editProfilePage" element={<EditProfilePage formData={formData} setFormData={setFormData}/>}/>
           </Routes>
