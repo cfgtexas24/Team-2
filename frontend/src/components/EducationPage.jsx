@@ -31,7 +31,7 @@ const Education = () => {
   const courses = [
     {
       image: courseImage1,
-      title: "ChatGPT Complete Guide: Learn Midjourney, ChatGPT 4 & More",
+      title: "Workouts for Pregnant Women",
       price: 15.99,
       originalPrice: 89.99,
       rating: 4.5,
@@ -40,7 +40,7 @@ const Education = () => {
     },
     {
       image: courseImage2,
-      title: "The Complete AI-Powered Copywriting Course & ChatGPT",
+      title: "The Complete Nutrition Guide for Pregnant Women",
       price: 19.99,
       originalPrice: 99.99,
       rating: 4.4,
@@ -49,7 +49,7 @@ const Education = () => {
     },
     {
       image: courseImage3,
-      title: "ChatGPT & Midjourney & Gemini: Digital Marketing Assistants",
+      title: "Nutrition and its impact on Babies",
       price: 22.99,
       originalPrice: 84.99,
       rating: 4.3,
@@ -58,7 +58,7 @@ const Education = () => {
     },
     {
       image: courseImage4,
-      title: "ChatGPT Master: Complete OpenAI ChatGPT Course",
+      title: "How to take care of yourself, Postpartum",
       price: 13.99,
       originalPrice: 39.99,
       rating: 4.4,
