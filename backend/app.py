@@ -1,9 +1,11 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, session
 import psycopg2
 from psycopg2 import sql
 import os
 from dotenv import load_dotenv
 from pathlib import Path
+import openai
+
 
 app = Flask(__name__)
 
@@ -12,6 +14,8 @@ env_path = Path('..') / '.env'
 load_dotenv(dotenv_path=env_path)
 
 # Database connection parameters
+openai.api_key = os.getenv("OPENAI_API_KEY")
+app.secret_key = os.getenv("FLASK_SECRET_KEY", "supersecretkey")
 db_user = os.getenv("USER")
 db_password = os.getenv("PASS")
 db_host = os.getenv("HOST")
@@ -116,6 +120,57 @@ def get_questions():
 
     except Exception as error:
         return jsonify({"error": str(error)})
+    
+@app.route("/chat", methods=["POST"])
+def chat():
+    try:
+        # Get user input from the request body
+        user_input = request.json.get("message", "")
+
+        if not user_input:
+            return jsonify({"error": "Message is required"}), 400
+
+        # Check if there's a conversation history; if not, initialize it
+        if 'conversation' not in session:
+            session['conversation'] = []
+
+            # Add a system message at the beginning of the conversation
+            session['conversation'].append({
+                "role": "system",
+                "content": "You are a helpful assistant specialized in providing health advice for women dealing with prenatal and postnatal care."
+            })
+
+        # Append user's message to the conversation history
+        session['conversation'].append({"role": "user", "content": user_input})
+
+        # Prepare messages for the conversation
+        messages = session['conversation']
+
+        # Make API request to OpenAI using ChatCompletion
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=messages
+        )
+
+        # Extract the assistant's reply
+        assistant_reply = response['choices'][0]['message']['content']
+
+        # Append assistant's reply to the conversation history
+        session['conversation'].append({"role": "assistant", "content": assistant_reply})
+
+        print(session['conversation'])
+        # Return the reply as a JSON response
+        return jsonify({"reply": assistant_reply}), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+# Route to clear the conversation history (useful if you want to reset the conversation)
+@app.route("/reset", methods=["POST"])
+def reset_conversation():
+    session.pop('conversation', None)
+    return jsonify({"message": "Conversation reset"}), 200
 
 
 if __name__ == '__main__':
