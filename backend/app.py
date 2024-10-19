@@ -5,9 +5,11 @@ import os
 from dotenv import load_dotenv
 from pathlib import Path
 import openai
-
+from flask_cors import CORS
 
 app = Flask(__name__)
+
+CORS(app)
 
 # Load environment variables from .env in the parent directory
 env_path = Path('..') / '.env'
@@ -429,6 +431,44 @@ def add_column():
     except Exception as e:
         conn.rollback()  # Rollback the transaction if there's an error
         return jsonify({"error": str(e)}), 500
+
+@app.route("/chat", methods=["POST"])
+def chat():
+    try:
+        # Get user input from the request body
+        user_input = request.json.get("message", "")
+        if not user_input:
+            return jsonify({"error": "Message is required"}), 400
+        # Check if there's a conversation history; if not, initialize it
+        if 'conversation' not in session:
+            session['conversation'] = []
+            # Add a system message at the beginning of the conversation
+            session['conversation'].append({
+                "role": "system",
+                "content": "You are a helpful assistant specialized in providing health advice for women dealing with prenatal and postnatal care."
+            })
+        # Append user's message to the conversation history
+        session['conversation'].append({"role": "user", "content": user_input})
+        # Prepare messages for the conversation
+        messages = session['conversation']
+        # Make API request to OpenAI using ChatCompletion
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=messages
+        )
+        # Extract the assistant's reply
+        assistant_reply = response['choices'][0]['message']['content']
+        # Append assistant's reply to the conversation history
+        session['conversation'].append({"role": "assistant", "content": assistant_reply})
+        # Return the reply as a JSON response
+        return jsonify({"reply": assistant_reply}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+# Route to clear the conversation history (useful if you want to reset the conversation)
+@app.route("/reset", methods=["POST"])
+def reset_conversation():
+    session.pop('conversation', None)
+    return jsonify({"message": "Conversation reset"}), 200
 
 if __name__ == '__main__':
     app.run(debug=True)
