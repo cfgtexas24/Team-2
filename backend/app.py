@@ -262,6 +262,7 @@ def get_client(id):
     except Exception as error:
         print(f"Error occurred: {error}")
         return jsonify({"error": str(error)}), 500  # Return 500 for server errors
+
     
 @app.route('/update_client/<int:user_id>', methods=['PUT'])
 def update_client(user_id):
