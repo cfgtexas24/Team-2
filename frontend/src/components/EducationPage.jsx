@@ -73,22 +73,26 @@ const Education = () => {
     {
       image: courseImage5,
       title: "The Benefits of having a Doula",
-      videoUrl: "https://www.youtube.com/watch?v=FKxY-VUmoOk"
+      videoUrl: "https://www.youtube.com/watch?v=FKxY-VUmoOk",
+      skill: "Support System" 
     },
     {
       image: courseImage6,
       title: "The Benefits of having a Midwife",
-      videoUrl: "https://www.youtube.com/watch?v=sff3mvvQc9U"
+      videoUrl: "https://www.youtube.com/watch?v=sff3mvvQc9U",
+      skill: "Support System" 
     },
     {
       image: courseImage7,
       title: "Importance of Mental Health after Birth",
-      videoUrl: "https://www.youtube.com/watch?v=K_3NlTtybIA"
+      videoUrl: "https://www.youtube.com/watch?v=K_3NlTtybIA",
+      skill: "Postpartum Self-Care" 
     },
     {
       image: courseImage8,
       title: "Importance of Culture on Birthing Practices",
-      videoUrl: "https://www.youtube.com/watch?v=Gd3OjuKjKVk"
+      videoUrl: "https://www.youtube.com/watch?v=Gd3OjuKjKVk",
+      skill: "Communication and Relationship Skills" 
     }
   ];
 
@@ -107,7 +111,6 @@ const Education = () => {
       <h1 className="text-3xl font-bold mb-8">All the skills you need in one place</h1>
       <p className="text-gray-600 mb-4 text-center">How to succeed Postpartum.</p>
 
-      {/* Skill buttons with horizontal scrolling */}
       <div className="flex space-x-4 mb-8 overflow-x-auto whitespace-nowrap">
         {skills.map((skill) => (
           <button
@@ -129,7 +132,6 @@ const Education = () => {
         <FaArrowRight className="text-gray-500 self-center ml-2" />
       </div>
 
-      {/* Course videos based on the selected skill */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {courses
           .filter(course => !selectedSkill || course.skill === selectedSkill)
