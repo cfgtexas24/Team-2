@@ -4,15 +4,12 @@ import signupPageImg from "../assets/signupPageImg.png";
 function SignUp() {
   return (
     <div className="flex min-h-screen">
-      <div
-        className="w-1/2 bg-white flex items-center justify-center"
-        style={{
-          backgroundImage: `url(${signupPageImg})`,
-          backgroundSize: "contain",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-        }}
-      >
+      <div className="w-1/2 bg-white flex items-center justify-center">
+        <img
+          src={signupPageImg}
+          alt="Sign Up"
+          className="max-w-full max-h-full object-contain"
+        />
       </div>
 
       <div className="w-1/2 bg-white flex items-center justify-center">
