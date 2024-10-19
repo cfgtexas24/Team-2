@@ -344,8 +344,8 @@ def update_client(user_id):
         conn.rollback()  # Rollback the transaction if there's an error
         return jsonify({"error": str(e)}), 500
 
-@app.route('/add_column_and_question', methods=['POST'])
-def add_column_and_question():
+@app.route('/add_question', methods=['POST'])
+def add_question():
     data = request.get_json()
     new_column_name = data.get('new_column_name')  # Get the new column name from the request
     question_text = data.get('question')  # Get the question text
@@ -358,8 +358,6 @@ def add_column_and_question():
         cursor = conn.cursor()
 
         # Step 1: Add a new column to the client_info table
-        alter_table_query = f"ALTER TABLE client_info ADD COLUMN {new_column_name} VARCHAR;"
-        cursor.execute(alter_table_query)
 
         # Step 2: Insert the corresponding question record
         insert_question_query = """
@@ -374,12 +372,41 @@ def add_column_and_question():
         # Close the cursor
         cursor.close()
 
+        return jsonify({"message": "Question added and question inserted successfully."}), 201
+
+    except Exception as e:
+        conn.rollback()  # Rollback the transaction if there's an error
+        return jsonify({"error": str(e)}), 500
+    
+           
+
+@app.route('/add_column', methods=['PUT'])
+def add_column():
+    data = request.get_json()
+    new_column_name = data.get('new_column_name')  # Get the new column name from the request
+    if not new_column_name:
+        return jsonify({"error": "Missing required fields: new_column_name"}), 400
+
+    try:
+        cursor = conn.cursor()
+
+        # Step 1: Add a new column to the client_info table
+
+        # Step 2: Insert the corresponding question record
+        alter_table_query = f"ALTER TABLE client_info ADD COLUMN {new_column_name} VARCHAR;"
+        cursor.execute(alter_table_query)
+
+        # Commit the transaction
+        conn.commit()
+
+        # Close the cursor
+        cursor.close()
+
         return jsonify({"message": "Column added and question inserted successfully."}), 201
 
     except Exception as e:
         conn.rollback()  # Rollback the transaction if there's an error
         return jsonify({"error": str(e)}), 500
-
 
 if __name__ == '__main__':
     app.run(debug=True)
