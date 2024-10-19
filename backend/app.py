@@ -47,7 +47,9 @@ def index():
 
 @app.route('/add_medical', methods=['POST'])
 def add_medical():
-    data = request.get_json()  # Get the JSON data from the request
+
+    # Get the JSON data from the request 
+    data = request.get_json()
     
     # Extract fields from the request (ensure they're provided or set defaults)
     email = data.get('email')
@@ -135,7 +137,8 @@ def add_admin():
     except Exception as e:
         conn.rollback()  # Rollback the transaction if there's an error
         return jsonify({"error": str(e)}), 500
-    
+
+# Get questions router
 @app.route('/questions', methods=['GET'])
 def get_questions():
     try:
@@ -166,7 +169,7 @@ def get_questions():
     except Exception as error:
         return jsonify({"error": str(error)})
 
-
+# Create client router
 @app.route('/create_client', methods=['POST'])
 def create_client():
     try:
@@ -226,7 +229,8 @@ def create_client():
     except Exception as e:
         conn.rollback()  # Rollback the transaction if there's an error
         return jsonify({"error": str(e)}), 500
-    
+
+# Get client router
 @app.route('/client/<int:id>', methods=['GET'])
 def get_client(id):
     try:
@@ -263,7 +267,7 @@ def get_client(id):
         print(f"Error occurred: {error}")
         return jsonify({"error": str(error)}), 500  # Return 500 for server errors
 
-    
+# Update client router
 @app.route('/update_client/<int:user_id>', methods=['PUT'])
 def update_client(user_id):
     try:
@@ -289,27 +293,42 @@ def update_client(user_id):
         user_updates = []
         user_values = []
 
+        # Check if th email field is provided and add it to the update list if so
         if email:
             user_updates.append("email = %s")
             user_values.append(email)
+
+        # Check if the pass_hash field is provided and add it to the update list if so
         if pass_hash:
             user_updates.append("pass_hash = %s")
             user_values.append(pass_hash)
+        
+        # Check if the user_type field is provided and add it to the update list if so
         if user_type:
             user_updates.append("type = %s")
             user_values.append(user_type)
+        
+        # Check if the first_name field is provided and add it to the update list if so
         if first_name:
             user_updates.append("first_name = %s")
             user_values.append(first_name)
+        
+        # Check if the last_name field is provided and add it to the update list if so
         if last_name:
             user_updates.append("last_name = %s")
             user_values.append(last_name)
+        
+        # Check if the address field is provided and add it to the update list if so
         if address:
             user_updates.append("address = %s")
             user_values.append(address)
+        
+        # Check if the phone field is provided and add it to the update list if so
         if phone:
             user_updates.append("phone = %s")
             user_values.append(phone)
+        
+        # Check if the dob field is provided and add it to the update list if so
         if dob:
             user_updates.append("dob = %s")
             user_values.append(dob)
@@ -323,7 +342,9 @@ def update_client(user_id):
         # Filter incoming data based on available columns for client_info
         client_info_data = {key: value for key, value in data.items() if key in available_columns}
 
-        # If there are fields to update for client_info, construct the dynamic update query
+        # This section constructs and executes a dynamic SQL UPDATE query to update fields in the client_info table.
+        # It checks if there are fields to update, builds the SQL query based on provided data, 
+        # and includes the user_id to target the specific record.
         if client_info_data:
             client_info_updates = ', '.join(f"{key} = %s" for key in client_info_data.keys())
             client_info_values = list(client_info_data.values())
@@ -338,14 +359,21 @@ def update_client(user_id):
         # Close the cursor
         cursor.close()
 
+        # Return a success message
         return jsonify({"message": "Client updated successfully", "user_id": user_id}), 200
 
     except Exception as e:
         conn.rollback()  # Rollback the transaction if there's an error
         return jsonify({"error": str(e)}), 500
 
+<<<<<<< HEAD
 @app.route('/add_question', methods=['POST'])
 def add_question():
+=======
+# Add a new column to the client_info table and insert a corresponding question record
+@app.route('/add_column_and_question', methods=['POST'])
+def add_column_and_question():
+>>>>>>> 1dea4025a0e544f629c0ba684250752772e2170a
     data = request.get_json()
     new_column_name = data.get('new_column_name')  # Get the new column name from the request
     question_text = data.get('question')  # Get the question text
