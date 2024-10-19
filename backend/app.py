@@ -56,6 +56,64 @@ except Exception as error:
 def hash_string(input_string):
     return hashlib.sha256(input_string.encode('utf-8')).hexdigest()
 
+@app.route('/get-user-data', methods=['GET'])
+def get_user_data():
+    cursor = conn.cursor()
+    
+    # Perform the JOIN query, excluding the pass_hash column
+    cursor.execute('''
+        SELECT 
+            users.id, 
+            users.email, 
+            users.type, 
+            users.first_name, 
+            users.last_name, 
+            users.address, 
+            users.phone, 
+            users.dob,
+            client_info.user_id,
+            client_info.emergency_contact,
+            client_info.homelessness,
+            client_info.depression,
+            client_info.employment_status,
+            client_info.dependencies,
+            client_info.pregnancy_start,
+            client_info.anxiety
+        FROM 
+            users
+        JOIN 
+            client_info 
+        ON 
+            users.id = client_info.user_id;
+    ''')
+    
+    records = cursor.fetchall()
+
+    # Assuming your table has specific columns, map them to JSON
+    result = []
+    for row in records:
+        result.append({
+            "id": row[0],
+            "email": row[1],
+            "type": row[2],
+            "first_name": row[3],
+            "last_name": row[4],
+            "address": row[5],
+            "phone": row[6],
+            "dob": row[7],
+            "user_id": row[8],
+            "emergency_contact": row[9],
+            "homelessness": row[10],
+            "depression": row[11],
+            "employment_status": row[12],
+            "dependencies": row[13],
+            "pregnancy_start": row[14],
+            "anxiety": row[15]
+        })
+
+    cursor.close()
+    return jsonify(result)
+
 @app.route('/submit-answers/<int:record_id>', methods=['POST'])
 def submit_answers(record_id):
     data = request.json  # Assuming the form data is sent as JSON
