@@ -18,11 +18,11 @@ function Contact() {
     try {
       // Make a request to your backend to send the message to OpenAI
       const response = await axios.post('http://localhost:5000/chat', {
-        message,
-        chatHistory,
+        "message" : message,
+        // chatHistory,
       });
-
-      const botMessage = { sender: 'bot', text: response.data.botMessage };
+      console.log(response.data.reply);
+      const botMessage = { sender: 'bot', text: response.data.reply };
       setChatHistory((prev) => [...prev, botMessage]);
     } catch (error) {
       console.error("Error fetching the AI response:", error);
