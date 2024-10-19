@@ -6,6 +6,8 @@ from dotenv import load_dotenv
 from pathlib import Path
 import openai
 from flask_cors import CORS
+from flask_mail import Mail, Message
+
 
 app = Flask(__name__)
 
@@ -24,6 +26,15 @@ db_host = os.getenv("HOST")
 db_port = os.getenv("PORT")
 db_name = os.getenv("DB_NAME")
 
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USE_SSL'] = True
+app.config['MAIL_USERNAME'] = "abidewomenhealth@gmail.com"  # Your Gmail address
+app.config['MAIL_PASSWORD'] = "rdxm aejg igys qbcm"       # Use Gmail app-specific password
+app.config['MAIL_DEFAULT_SENDER'] = "abidewomenhealth@gmail.com"
+
+mail = Mail(app)
+
 # Global connection variable
 conn = None
 
@@ -41,6 +52,23 @@ try:
 except Exception as error:
     print(f"Error connecting to the database: {error}")
 
+@app.route('/send-email', methods=['POST'])
+def send_email():
+    data = request.json
+    target_email = data.get('target_email')
+    subject = data.get('subject', 'No Subject')  # Optional subject
+    text = data.get('text')
+    
+    if not target_email or not text:
+        return jsonify({"error": "target_email and text are required"}), 400
+
+    try:
+        # Create and send the email
+        msg = Message(subject=subject, recipients=[target_email], body=text)
+        mail.send(msg)
+        return jsonify({"message": "Email sent successfully!"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @app.route('/')
 def index():
