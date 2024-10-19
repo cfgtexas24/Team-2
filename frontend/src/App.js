@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'; // Import React Router components
 import './App.css';
 import SignupForm from './components/SignupForm';
-import LandingPage from './components/LandingPage';
+import LandingPage from './components/Calendar';
 import Navbar from './components/NavBar';
 
 function App() {

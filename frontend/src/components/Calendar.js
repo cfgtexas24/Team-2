@@ -1,7 +1,7 @@
 import React from "react";
 import '../index.css';
 
-function LandingPage() {
+function Calendar() {
   return (
     <div className="App">
       {/* Navigation Bar */}
@@ -14,4 +14,4 @@ function LandingPage() {
   );
 }
 
-export default LandingPage;
+export default Calendar;
