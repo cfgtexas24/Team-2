@@ -14,16 +14,24 @@ const Calendar = () => {
   const currentMonth = currentDate.toLocaleString('default', { month: 'long' });
   const today = currentDate.getDate();
 
+  // Handler for date selection
   const handleDateSelect = (date) => {
-    setSelectedDate(date);
+    setSelectedDate(date); // Set the selected date
     setSelectedTime(null); // Reset time selection on new date select
   };
 
+  // Handler for time selection
   const handleTimeSelect = (time) => {
-    setSelectedTime(time);
+    setSelectedTime(time); // Set the selected time
   };
 
+  
   return (
+    // Returns a JSX structure for a calendar reservation interface that allows users to:
+    // 1. Select an available date from a grid of buttons.
+    // 2. View and select available times for the selected date.
+    // 3. Display a confirmation message with the selected date and time.
+    // 4. Include a button to confirm the reservation.
     <div className="min-h-screen bg-gray-100 flex justify-center items-center">
       <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-lg">
         <h2 className="text-2xl font-bold mb-4 text-center">Calendly Reservation Page</h2>
