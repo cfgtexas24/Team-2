@@ -1,9 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FaBell, FaCog, FaUserEdit } from 'react-icons/fa';
 
 const ProfilePage = () => {
+  const [formData, setFormData] = useState({
+    race: '',
+    ethnicity: '',
+    gender: '',
+    age: '',
+    language: '',
+    disability: '',
+    education_level: '',
+    employment_status: '',
+    housing_status: '',
+  });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
   return (
-    <div className="min-h-screen flex flex-col items-center ">
+    <div className="min-h-screen flex flex-col items-center">
       <div className="w-full max-w-md p-6 bg-white rounded-lg mt-6">
         <div className="flex flex-col items-center">
           <div className="relative">
@@ -25,24 +45,28 @@ const ProfilePage = () => {
               <span>Edit profile information</span>
               <FaUserEdit className="text-gray-500" />
             </button>
-            <div className="flex justify-between items-center">
-              <span>Notifications</span>
-              <span className="text-blue-500">ON</span>
-            </div>
-            <div className="flex justify-between items-center mt-2">
-              <span>Language</span>
-              <span className="text-gray-500">English</span>
+            <div className="mt-4">
+              <form>
+                {Object.keys(formData).map((field) => (
+                  <div className="mb-4" key={field}>
+                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor={field}>
+                      {field.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+                    </label>
+                    <input
+                      type="text"
+                      id={field}
+                      name={field}
+                      value={formData[field]}
+                      onChange={handleInputChange}
+                      className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    />
+                  </div>
+                ))}
+              </form>
             </div>
           </div>
         </div>
       </div>
-      <nav className="fixed bottom-0 left-0 right-0 bg-white shadow-md flex justify-around p-4">
-        <button>Trans.</button>
-        <button>Feeds</button>
-        <button>Home</button>
-        <button>Wallet</button>
-        <button className="text-blue-500">Profile</button>
-      </nav>
     </div>
   );
 };
