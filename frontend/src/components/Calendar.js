@@ -6,28 +6,23 @@ const Calendar = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [confirmationMessage, setConfirmationMessage] = useState('');
 
-  // Array of available dates for demonstration purposes
   const availableDates = [23, 24, 25, 26, 29, 30];
   const availableTimes = ['10:00 AM', '11:00 AM', '2:00 PM', '3:00 PM'];
 
-  // Get the current year, month, and day
   const currentYear = currentDate.getFullYear();
   const currentMonth = currentDate.toLocaleString('default', { month: 'long' });
   const today = currentDate.getDate();
 
-  // Handler for date selection
   const handleDateSelect = (date) => {
     setSelectedDate(date);
     setSelectedTime(null);
     setConfirmationMessage('');
   };
 
-  // Handler for time selection
   const handleTimeSelect = (time) => {
     setSelectedTime(time);
   };
 
-  // Handler for confirming the reservation and sending an email
   const handleConfirmReservation = () => {
     if (selectedDate && selectedTime) {
       const appointmentDetails = {
@@ -60,17 +55,17 @@ const Calendar = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex justify-center items-center">
-      <div className="bg-white shadow-lg rounded-lg p-12 w-full max-w-3xl">
-        <h2 className="text-4xl font-bold mb-4 text-center">Appointment Reservation Page</h2>
+    <div className="min-h-screen bg-gray-100 flex justify-center items-center p-4">
+      <div className="bg-white shadow-lg rounded-lg p-6 sm:p-12 w-full max-w-md sm:max-w-3xl">
+        <h2 className="text-2xl sm:text-4xl font-bold mb-4 text-center">Appointment Reservation Page</h2>
 
         <div className="mb-6">
-          <h3 className="text-xl font-medium">{`Select a Date & Time (${currentMonth} ${currentYear})`}</h3>
-          <div className="grid grid-cols-7 gap-6 mt-4">
+          <h3 className="text-lg sm:text-xl font-medium">{`Select a Date & Time (${currentMonth} ${currentYear})`}</h3>
+          <div className="grid grid-cols-4 sm:grid-cols-7 gap-4 sm:gap-6 mt-4">
             {Array.from({ length: 30 }, (_, i) => i + 1).map((day) => (
               <button
                 key={day}
-                className={`p-4 rounded-lg text-center text-xl ${
+                className={`p-2 sm:p-4 rounded-lg text-center text-lg sm:text-xl ${
                   availableDates.includes(day)
                     ? selectedDate === day
                       ? 'bg-[#A26B61] text-white hover:bg-[#F4E8E7]'
@@ -89,12 +84,12 @@ const Calendar = () => {
 
         {selectedDate && (
           <div className="mb-6">
-            <h3 className="text-xl font-medium">Available Times for {selectedDate} {currentMonth} {currentYear}</h3>
-            <div className="grid grid-cols-2 gap-6 mt-4">
+            <h3 className="text-lg sm:text-xl font-medium">Available Times for {selectedDate} {currentMonth} {currentYear}</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mt-4">
               {availableTimes.map((time) => (
                 <button
                   key={time}
-                  className={`p-4 rounded-lg text-center text-xl ${
+                  className={`p-2 sm:p-4 rounded-lg text-center text-lg sm:text-xl ${
                     selectedTime === time
                       ? 'bg-[#A26B61] text-white hover:bg-[#F4E8E7]'
                       : 'bg-[#F4E8E7] hover:bg-[#A26B61]'
@@ -110,11 +105,11 @@ const Calendar = () => {
 
         {selectedDate && selectedTime && (
           <div className="mt-6">
-            <p className="text-center font-medium text-xl">
+            <p className="text-center font-medium text-lg sm:text-xl">
               You have selected {selectedDate} {currentMonth} {currentYear} at {selectedTime}.
             </p>
             <button 
-              className="mt-4 w-full bg-[#A26B61] text-white py-3 rounded-lg hover:bg-[#F4E8E7] text-lg"
+              className="mt-4 w-full bg-[#A26B61] text-white py-2 sm:py-3 rounded-lg hover:bg-[#F4E8E7] text-base sm:text-lg"
               onClick={handleConfirmReservation}
             >
               Confirm Reservation
@@ -123,7 +118,7 @@ const Calendar = () => {
         )}
 
         {confirmationMessage && (
-          <div className="mt-4 text-center text-green-600 font-semibold text-xl">
+          <div className="mt-4 text-center text-green-600 font-semibold text-lg sm:text-xl">
             {confirmationMessage}
           </div>
         )}
