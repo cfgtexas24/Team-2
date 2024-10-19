@@ -366,14 +366,8 @@ def update_client(user_id):
         conn.rollback()  # Rollback the transaction if there's an error
         return jsonify({"error": str(e)}), 500
 
-<<<<<<< HEAD
 @app.route('/add_question', methods=['POST'])
 def add_question():
-=======
-# Add a new column to the client_info table and insert a corresponding question record
-@app.route('/add_column_and_question', methods=['POST'])
-def add_column_and_question():
->>>>>>> 1dea4025a0e544f629c0ba684250752772e2170a
     data = request.get_json()
     new_column_name = data.get('new_column_name')  # Get the new column name from the request
     question_text = data.get('question')  # Get the question text
