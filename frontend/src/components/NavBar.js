@@ -7,6 +7,7 @@ import { useLocation } from 'react-router-dom';
 
 
 function Navbar() {
+  // State to determine whether to show the navbar
   const [showNavbar, setShowNavbar] = useState(false);
   const location = useLocation();
 
@@ -15,8 +16,8 @@ function Navbar() {
   useEffect(() => {
     
     const handleMouseMove = (event) => {
-      const windowHeight = window.innerHeight;
-      const mouseY = event.clientY;
+      const windowHeight = window.innerHeight; // Get the height of the window
+      const mouseY = event.clientY; // Get the y (vertical) position of the mouse
 
       // Show the navbar if the mouse is within 100px of the bottom of the screen
       setShowNavbar(windowHeight - mouseY < 100);
@@ -29,7 +30,7 @@ function Navbar() {
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
     };
-  }, []);
+  }, []); // Empty dependency array to run the effect only once
 
   if (location.pathname === '/adminhome') {
     return null;  // Return nothing, which effectively hides the Navbar

@@ -23,7 +23,7 @@ const ProfilePage = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center">
+    <div className="min-h-screen flex flex-col items-center pt-16 pb-20">
       <div className="w-full max-w-md p-6 bg-white rounded-lg mt-6">
         <div className="flex flex-col items-center">
           <div className="relative">
