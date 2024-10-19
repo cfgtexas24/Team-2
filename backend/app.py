@@ -7,6 +7,7 @@ from pathlib import Path
 import openai
 from flask_cors import CORS
 from flask_mail import Mail, Message
+import hashlib
 
 
 app = Flask(__name__)
@@ -51,6 +52,21 @@ try:
     
 except Exception as error:
     print(f"Error connecting to the database: {error}")
+
+def hash_string(input_string):
+    # Encode the input string to bytes
+    encoded_string = input_string.encode('utf-8')
+    
+    # Create a SHA-256 hash object
+    sha256_hash = hashlib.sha256()
+    
+    # Update the hash object with the bytes of the encoded string
+    sha256_hash.update(encoded_string)
+    
+    # Get the hexadecimal digest of the hash
+    hashed_output = sha256_hash.hexdigest()
+    
+    return hashed_output
 
 @app.route('/send-email', methods=['POST'])
 def send_email():

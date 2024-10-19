@@ -2,22 +2,22 @@ import React from "react";
 import signupPageImg from "../assets/signupPageImg.png";
 import { Link } from "react-router-dom";
 
-function SignUp() {
+function SignIn() {
   return (
     <div className="flex min-h-screen">
       <div className="w-1/2 bg-white flex items-center justify-center">
         <img
           src={signupPageImg}
-          alt="Sign Up"
+          alt="Sign In"
           className="max-w-full max-h-full object-contain"
         />
       </div>
 
       <div className="w-1/2 bg-white flex items-center justify-center">
         <div className="max-w-md w-full p-10">
-          <h2 className="text-3xl mb-6 text-gray-700">Sign up</h2>
+          <h2 className="text-3xl mb-6 text-gray-700">Sign In</h2>
           <p className="mb-6 text-gray-600">
-            Sign up for free to access any of our products
+            Sign In for free to access any of our products
           </p>
           <form>
             <div className="mb-6">
@@ -46,14 +46,14 @@ function SignUp() {
               type="submit"
               className="w-full py-3 bg-[#A26B61] text-white rounded-lg font-bold hover:bg-[#F4E8E7]"
             >
-              Sign up
+              Sign In
             </button>
 
           </form>
           <p className="mt-4 text-center text-gray-500">
-            Already have an account?{" "}
-            <Link to="/signin" className="[#A26B61]-underline">
-              Log in
+            Don't have an account?{" "}
+            <Link to="/" className="[#A26B61]-underline">
+              Sign Up
             </Link>
           </p>
         </div>
@@ -62,4 +62,4 @@ function SignUp() {
   );
 }
 
-export default SignUp;
+export default SignIn;

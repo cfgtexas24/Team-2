@@ -9,6 +9,7 @@ import Navbar from './components/NavBar';
 import SignUp from './components/SignUp';
 import Education from './components/EducationPage';
 import Contact from './components/Messaging';
+import SignIn from './components/SignIn';
 function App() {
   return (
     <Router>
@@ -17,6 +18,7 @@ function App() {
           <Navbar /> {/* Render the Navbar */}
           <Routes>
             <Route path="/" element={<SignUp />} /> {/* Default route */}
+            <Route path="/signin" element={<SignIn />} />
             <Route path="/calendar" element={<Calendar />} /> {/* Default route */}
             <Route path="/education" element={<Education />} /> {/* Signup page */}
             <Route path="/profile" element={<ProfilePage />} /> {/* Signup page */}
