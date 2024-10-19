@@ -33,45 +33,55 @@ const Education = () => {
     {
       image: courseImage1,
       title: "Workouts for Pregnant Women",
-      videoUrl: "https://www.youtube.com/watch?v=lKx0sOz31C4" // Replace with actual video URL
+      videoUrl: "https://www.youtube.com/watch?v=lKx0sOz31C4"
     },
     {
       image: courseImage2,
       title: "The Complete Nutrition Guide for Pregnant Women",
-      videoUrl: "https://www.youtube.com/watch?app=desktop&v=IWBF60kQcuk&pp=sAQA" // Replace with actual video URL
+      videoUrl: "https://www.youtube.com/watch?app=desktop&v=IWBF60kQcuk&pp=sAQA"
     },
     {
       image: courseImage3,
       title: "Nutrition and its impact on Babies",
-      videoUrl: "https://www.youtube.com/watch?v=4bUPl-qPg38" // Replace with actual video URL
+      videoUrl: "https://www.youtube.com/watch?v=4bUPl-qPg38"
     },
     {
       image: courseImage4,
       title: "How to take care of yourself, Postpartum",
-      videoUrl: "https://www.youtube.com/watch?v=3N7zpOvStOA" // Replace with actual video URL
+      videoUrl: "https://www.youtube.com/watch?v=3N7zpOvStOA"
     }
   ];
 
-
-  /*  This component renders an educational section featuring a title, a subtitle, 
-  a series of category buttons, and a grid layout for displaying course cards. 
-  The layout is responsive. It adjusts the number of columns based on the screen size. 
-  Each course card is generated dynamically from an array of course data, 
-  which includes images, titles, and video URLs for further learning. */
   return (
     <div className="bg-gray-100 min-h-screen flex flex-col items-center p-10">
       <h1 className="text-3xl font-bold mb-8">All the skills you need in one place</h1>
       <p className="text-gray-600 mb-4 text-center">From critical skills to technical topics, find everything you need to develop professionally.</p>
       
       <div className="flex space-x-4 mb-8 overflow-x-auto">
-        <button className="bg-[#A26B61] px-4 py-2 rounded-full text-sm font-semibold text-white">Breastfeeding Techniques</button>
-        <button className="bg-[#A26B61] px-4 py-2 rounded-full text-sm font-semibold text-white">Infant Care</button>
-        <button className="bg-[#A26B61] px-4 py-2 rounded-full text-sm font-semibold text-white">Postpartum Self-Care</button>
-        <button className="bg-[#A26B61] px-4 py-2 rounded-full text-sm font-semibold text-white">Nutrition and Meal Planning</button>
-        <button className="bg-[#A26B61] px-4 py-2 rounded-full text-sm font-semibold text-white">Sleep Strategies</button>
-        <button className="bg-[#A26B61] px-4 py-2 rounded-full text-sm font-semibold text-white">Communication and Relationship Skills</button>
-        <button className="bg-[#A26B61] px-4 py-2 rounded-full text-sm font-semibold text-white">Babywearing Techniques</button>
-        <button className="bg-[#A26B61] px-4 py-2 rounded-full text-sm font-semibold text-white">Support System</button>
+        <button className="bg-[#A26B61] px-4 py-2 rounded-full text-sm font-semibold text-white transition-transform duration-300 hover:scale-105 hover:bg-[#8f5749]">
+          Breastfeeding Techniques
+        </button>
+        <button className="bg-[#A26B61] px-4 py-2 rounded-full text-sm font-semibold text-white transition-transform duration-300 hover:scale-105 hover:bg-[#8f5749]">
+          Infant Care
+        </button>
+        <button className="bg-[#A26B61] px-4 py-2 rounded-full text-sm font-semibold text-white transition-transform duration-300 hover:scale-105 hover:bg-[#8f5749]">
+          Postpartum Self-Care
+        </button>
+        <button className="bg-[#A26B61] px-4 py-2 rounded-full text-sm font-semibold text-white transition-transform duration-300 hover:scale-105 hover:bg-[#8f5749]">
+          Nutrition and Meal Planning
+        </button>
+        <button className="bg-[#A26B61] px-4 py-2 rounded-full text-sm font-semibold text-white transition-transform duration-300 hover:scale-105 hover:bg-[#8f5749]">
+          Sleep Strategies
+        </button>
+        <button className="bg-[#A26B61] px-4 py-2 rounded-full text-sm font-semibold text-white transition-transform duration-300 hover:scale-105 hover:bg-[#8f5749]">
+          Communication and Relationship Skills
+        </button>
+        <button className="bg-[#A26B61] px-4 py-2 rounded-full text-sm font-semibold text-white transition-transform duration-300 hover:scale-105 hover:bg-[#8f5749]">
+          Babywearing Techniques
+        </button>
+        <button className="bg-[#A26B61] px-4 py-2 rounded-full text-sm font-semibold text-white transition-transform duration-300 hover:scale-105 hover:bg-[#8f5749]">
+          Support System
+        </button>
         <FaArrowRight className="text-gray-500 self-center ml-2" />
       </div>
 
