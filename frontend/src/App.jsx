@@ -11,6 +11,7 @@ import Education from './components/EducationPage';
 import Contact from './components/Messaging';
 import SignIn from './components/SignIn';
 import AdminHome from './components/AdminHome';
+import AdminProfile from './components/AdminProfile';
 function App() {
   return (
     <Router>
@@ -26,6 +27,7 @@ function App() {
             <Route path="/form" element={<SignupForm />} /> {/* Signup page */}
             <Route path="/contact" element={<Contact />} /> {/* Signup page */}
             <Route path="adminhome" element={<AdminHome/>}/>
+            <Route path="adminprofile" element={<AdminProfile/>}/>
           </Routes>
         </header>
       </div>
