@@ -27,7 +27,7 @@ const CourseCard = ({ image, title, price, originalPrice, rating, reviews, badge
   );
 };
 
-const App = () => {
+const Education = () => {
   const courses = [
     {
       image: courseImage1,
@@ -102,4 +102,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default Education;
