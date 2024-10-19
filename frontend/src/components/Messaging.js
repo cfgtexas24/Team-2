@@ -16,17 +16,11 @@ function Contact() {
     setMessage('');
 
     try {
-      const response = await axios.post('https://api.openai.com/v1/chat/completions', {
-        model: 'gpt-3.5-turbo', // You can change the model if needed
-        messages: [...chatHistory, { role: 'user', content: message }],
-      }, {
-        headers: {
-          'Authorization': `Bearer YOUR_OPENAI_API_KEY`, // Replace with your OpenAI API key
-          'Content-Type': 'application/json',
-        },
+      // Make a request to your backend to send the message to OpenAI
+      const response = await axios.post('http://localhost:5000/chat', {
+        message,
       });
-
-      const botMessage = { sender: 'bot', text: response.data.choices[0].message.content };
+      const botMessage = { sender: 'bot', text: response.data.reply };
       setChatHistory((prev) => [...prev, botMessage]);
     } catch (error) {
       console.error("Error fetching the AI response:", error);
@@ -34,29 +28,45 @@ function Contact() {
   };
 
   return (
-    <div className="chatbox max-w-md mx-auto p-4 bg-white rounded-lg shadow-lg">
-      <div className="chat-history h-64 overflow-y-auto mb-4 border border-gray-200 p-2 rounded-lg">
-        {chatHistory.map((chat, index) => (
-          <div key={index} className={`my-2 p-2 rounded ${chat.sender === 'user' ? 'bg-blue-100 text-right' : 'bg-gray-100 text-left'}`}>
-            <strong className={chat.sender === 'user' ? 'text-blue-600' : 'text-gray-600'}>
-              {chat.sender === 'user' ? 'You' : 'Bot'}:
-            </strong> {chat.text}
-          </div>
-        ))}
+    <div className="flex justify-center items-center h-screen bg-white">
+      <div className="w-3/5 h-4/5 flex flex-col bg-white border border-gray-300 rounded-lg shadow-lg">
+        
+        {/* Title Section */}
+        <h1 className="text-center text-2xl font-bold mb-4 text-[#A26B61]">Messaging</h1>
+
+        <div className="chatbox flex-1 overflow-y-auto p-4" style={{ backgroundColor: '#F2EBE3' }}>
+          {chatHistory.map((chat, index) => (
+            <div
+              key={index}
+              className={`my-2 p-3 max-w-[80%] rounded-lg ${chat.sender === 'user' ? 'self-end' : 'self-start'}`}
+              style={{
+                backgroundColor: chat.sender === 'user' ? '#C58973' : '#D3E2E4',
+                color: chat.sender === 'user' ? '#FFFFFF' : '#000000',
+                alignSelf: chat.sender === 'user' ? 'flex-end' : 'flex-start',
+              }}
+            >
+              {chat.text}
+            </div>
+          ))}
+        </div>
+
+        <form onSubmit={handleSendMessage} className="p-4 border-t border-gray-300 flex">
+          <input
+            type="text"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            placeholder="Type your message..."
+            required
+            className="flex-1 border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <button
+            type="submit"
+            className="ml-3 bg-[#A26B61] text-white rounded-md p-3 hover:bg-[#8c564c] transition duration-200"
+          >
+            Send
+          </button>
+        </form>
       </div>
-      <form onSubmit={handleSendMessage} className="flex">
-        <input
-          type="text"
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          placeholder="Type your message..."
-          required
-          className="flex-1 border border-gray-300 rounded-l-lg p-2"
-        />
-        <button type="submit" className="bg-blue-500 text-white rounded-r-lg p-2 hover:bg-blue-600 transition duration-200">
-          Send
-        </button>
-      </form>
     </div>
   );
 }

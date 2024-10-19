@@ -5,9 +5,11 @@ import os
 from dotenv import load_dotenv
 from pathlib import Path
 import openai
-
+from flask_cors import CORS
 
 app = Flask(__name__)
+
+CORS(app)
 
 # Load environment variables from .env in the parent directory
 env_path = Path('..') / '.env'
@@ -47,7 +49,9 @@ def index():
 
 @app.route('/add_medical', methods=['POST'])
 def add_medical():
-    data = request.get_json()  # Get the JSON data from the request
+
+    # Get the JSON data from the request 
+    data = request.get_json()
     
     # Extract fields from the request (ensure they're provided or set defaults)
     email = data.get('email')
@@ -135,7 +139,8 @@ def add_admin():
     except Exception as e:
         conn.rollback()  # Rollback the transaction if there's an error
         return jsonify({"error": str(e)}), 500
-    
+
+# Get questions router
 @app.route('/questions', methods=['GET'])
 def get_questions():
     try:
@@ -166,7 +171,7 @@ def get_questions():
     except Exception as error:
         return jsonify({"error": str(error)})
 
-
+# Create client router
 @app.route('/create_client', methods=['POST'])
 def create_client():
     try:
@@ -226,7 +231,8 @@ def create_client():
     except Exception as e:
         conn.rollback()  # Rollback the transaction if there's an error
         return jsonify({"error": str(e)}), 500
-    
+
+# Get client router
 @app.route('/client/<int:id>', methods=['GET'])
 def get_client(id):
     try:
@@ -263,7 +269,7 @@ def get_client(id):
         print(f"Error occurred: {error}")
         return jsonify({"error": str(error)}), 500  # Return 500 for server errors
 
-    
+# Update client router
 @app.route('/update_client/<int:user_id>', methods=['PUT'])
 def update_client(user_id):
     try:
@@ -289,27 +295,42 @@ def update_client(user_id):
         user_updates = []
         user_values = []
 
+        # Check if th email field is provided and add it to the update list if so
         if email:
             user_updates.append("email = %s")
             user_values.append(email)
+
+        # Check if the pass_hash field is provided and add it to the update list if so
         if pass_hash:
             user_updates.append("pass_hash = %s")
             user_values.append(pass_hash)
+        
+        # Check if the user_type field is provided and add it to the update list if so
         if user_type:
             user_updates.append("type = %s")
             user_values.append(user_type)
+        
+        # Check if the first_name field is provided and add it to the update list if so
         if first_name:
             user_updates.append("first_name = %s")
             user_values.append(first_name)
+        
+        # Check if the last_name field is provided and add it to the update list if so
         if last_name:
             user_updates.append("last_name = %s")
             user_values.append(last_name)
+        
+        # Check if the address field is provided and add it to the update list if so
         if address:
             user_updates.append("address = %s")
             user_values.append(address)
+        
+        # Check if the phone field is provided and add it to the update list if so
         if phone:
             user_updates.append("phone = %s")
             user_values.append(phone)
+        
+        # Check if the dob field is provided and add it to the update list if so
         if dob:
             user_updates.append("dob = %s")
             user_values.append(dob)
@@ -323,7 +344,9 @@ def update_client(user_id):
         # Filter incoming data based on available columns for client_info
         client_info_data = {key: value for key, value in data.items() if key in available_columns}
 
-        # If there are fields to update for client_info, construct the dynamic update query
+        # This section constructs and executes a dynamic SQL UPDATE query to update fields in the client_info table.
+        # It checks if there are fields to update, builds the SQL query based on provided data, 
+        # and includes the user_id to target the specific record.
         if client_info_data:
             client_info_updates = ', '.join(f"{key} = %s" for key in client_info_data.keys())
             client_info_values = list(client_info_data.values())
@@ -338,35 +361,64 @@ def update_client(user_id):
         # Close the cursor
         cursor.close()
 
+        # Return a success message
         return jsonify({"message": "Client updated successfully", "user_id": user_id}), 200
 
     except Exception as e:
         conn.rollback()  # Rollback the transaction if there's an error
         return jsonify({"error": str(e)}), 500
 
-@app.route('/add_column_and_question', methods=['POST'])
-def add_column_and_question():
+@app.route('/add_question', methods=['POST'])
+def add_question():
     data = request.get_json()
     new_column_name = data.get('new_column_name')  # Get the new column name from the request
     question_text = data.get('question')  # Get the question text
-    user_id = data.get('user_id')  # Assuming you're providing user_id to link with client_info
+    question_type = data.get('type')  # Get the question type
 
-    if not new_column_name or not question_text or not user_id:
-        return jsonify({"error": "Missing required fields: new_column_name, question, or user_id"}), 400
+    if not new_column_name or not question_text or not question_type:
+        return jsonify({"error": "Missing required fields: new_column_name, question, or type"}), 400
 
     try:
         cursor = conn.cursor()
 
         # Step 1: Add a new column to the client_info table
-        alter_table_query = f"ALTER TABLE client_info ADD COLUMN {new_column_name} VARCHAR;"
-        cursor.execute(alter_table_query)
 
         # Step 2: Insert the corresponding question record
         insert_question_query = """
         INSERT INTO questions (question, client_field_name, type)
         VALUES (%s, %s, %s);
         """
-        cursor.execute(insert_question_query, (question_text, new_column_name, 'varchar'))
+        cursor.execute(insert_question_query, (question_text, new_column_name, question_type))
+
+        # Commit the transaction
+        conn.commit()
+
+        # Close the cursor
+        cursor.close()
+
+        return jsonify({"message": "Question added and question inserted successfully."}), 201
+
+    except Exception as e:
+        conn.rollback()  # Rollback the transaction if there's an error
+        return jsonify({"error": str(e)}), 500
+    
+           
+
+@app.route('/add_column', methods=['PUT'])
+def add_column():
+    data = request.get_json()
+    new_column_name = data.get('new_column_name')  # Get the new column name from the request
+    if not new_column_name:
+        return jsonify({"error": "Missing required fields: new_column_name"}), 400
+
+    try:
+        cursor = conn.cursor()
+
+        # Step 1: Add a new column to the client_info table
+
+        # Step 2: Insert the corresponding question record
+        alter_table_query = f"ALTER TABLE client_info ADD COLUMN {new_column_name} VARCHAR(255);"
+        cursor.execute(alter_table_query)
 
         # Commit the transaction
         conn.commit()
@@ -380,6 +432,44 @@ def add_column_and_question():
         conn.rollback()  # Rollback the transaction if there's an error
         return jsonify({"error": str(e)}), 500
 
+@app.route("/chat", methods=["POST"])
+def chat():
+    try:
+        # Get user input from the request body
+        user_input = request.json.get("message", "")
+        if not user_input:
+            return jsonify({"error": "Message is required"}), 400
+        # Check if there's a conversation history; if not, initialize it
+        if 'conversation' not in session:
+            session['conversation'] = []
+            # Add a system message at the beginning of the conversation
+            session['conversation'].append({
+                "role": "system",
+                "content": "You are a helpful assistant specialized in providing health advice for women dealing with prenatal and postnatal care."
+            })
+        # Append user's message to the conversation history
+        session['conversation'].append({"role": "user", "content": user_input})
+        # Prepare messages for the conversation
+        messages = session['conversation']
+        # Make API request to OpenAI using ChatCompletion
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=messages,
+            max_tokens=150 
+        )
+        # Extract the assistant's reply
+        assistant_reply = response['choices'][0]['message']['content']
+        # Append assistant's reply to the conversation history
+        session['conversation'].append({"role": "assistant", "content": assistant_reply})
+        # Return the reply as a JSON response
+        return jsonify({"reply": assistant_reply}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+# Route to clear the conversation history (useful if you want to reset the conversation)
+@app.route("/reset", methods=["POST"])
+def reset_conversation():
+    session.pop('conversation', None)
+    return jsonify({"message": "Conversation reset"}), 200
 
 if __name__ == '__main__':
     app.run(debug=True)

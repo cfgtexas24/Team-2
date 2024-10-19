@@ -55,7 +55,7 @@ const FormLabel = forwardRef(({ className, ...props }, ref) => {
   return (
     <label
       ref={ref}
-      className={cn("block text-lg font-medium text-black", className)} // Change text color to black
+      className={cn("block text-lg font-medium text-#313131", className)} // Change text color to black
       htmlFor={formItemId}
       {...props}
     />
@@ -168,7 +168,7 @@ const SignupForm = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-white"> {/* Set outer background color to white */}
+    <div className="flex justify-center items-center bg-white pt-10"> {/* Added padding-top of 10 to create space */}
       <div className="w-2/5"> {/* Set width to 2/5 of the screen */}
         <h2 className="text-2xl font-bold text-black mb-4 text-center">Profile Information</h2> {/* Header for the form */}
         <Form onSubmit={handleSubmit}>

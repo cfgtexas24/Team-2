@@ -5,23 +5,20 @@ import courseImage2 from '../assets/video2.jpg';
 import courseImage3 from '../assets/video3.jpg';
 import courseImage4 from '../assets/video4.jpeg';
 
-const CourseCard = ({ image, title, price, originalPrice, rating, reviews, badge }) => {
+const CourseCard = ({ image, title, videoUrl }) => {
   return (
-    <div className="bg-white rounded-lg shadow-lg overflow-hidden w-64">
-      <img src={image} alt={title} className="w-full h-40 object-cover" />
+    <div className="bg-white rounded-lg shadow-lg overflow-hidden w-64 transition-transform duration-300 transform hover:scale-105 hover:shadow-xl">
+      <a href={videoUrl} target="_blank" rel="noopener noreferrer">
+        <div className="relative">
+          <img 
+            src={image} 
+            alt={title} 
+            className="w-full h-40 object-cover"
+          />
+        </div>
+      </a>
       <div className="p-4">
         <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
-        <div className="flex items-center mt-2">
-          <span className="text-red-500 text-lg font-bold">${price}</span>
-          <span className="text-gray-500 line-through text-sm ml-2">${originalPrice}</span>
-        </div>
-        <div className="flex items-center mt-2 text-yellow-500">
-          <span>⭐ {rating}</span>
-          <span className="ml-1 text-gray-600">({reviews} reviews)</span>
-        </div>
-        <div className={`mt-3 inline-block text-sm px-2 py-1 rounded-full ${badge === 'Bestseller' ? 'bg-yellow-300 text-yellow-900' : 'bg-purple-600 text-white'}`}>
-          {badge}
-        </div>
       </div>
     </div>
   );
@@ -32,38 +29,22 @@ const Education = () => {
     {
       image: courseImage1,
       title: "Workouts for Pregnant Women",
-      price: 15.99,
-      originalPrice: 89.99,
-      rating: 4.5,
-      reviews: 39635,
-      badge: "Bestseller"
+      videoUrl: "https://www.youtube.com/watch?v=lKx0sOz31C4" // Replace with actual video URL
     },
     {
       image: courseImage2,
       title: "The Complete Nutrition Guide for Pregnant Women",
-      price: 19.99,
-      originalPrice: 99.99,
-      rating: 4.4,
-      reviews: 1652,
-      badge: "Premium"
+      videoUrl: "https://www.youtube.com/watch?app=desktop&v=IWBF60kQcuk&pp=sAQA" // Replace with actual video URL
     },
     {
       image: courseImage3,
       title: "Nutrition and its impact on Babies",
-      price: 22.99,
-      originalPrice: 84.99,
-      rating: 4.3,
-      reviews: 401,
-      badge: "Premium"
+      videoUrl: "https://www.youtube.com/watch?v=4bUPl-qPg38" // Replace with actual video URL
     },
     {
       image: courseImage4,
       title: "How to take care of yourself, Postpartum",
-      price: 13.99,
-      originalPrice: 39.99,
-      rating: 4.4,
-      reviews: 400,
-      badge: "Premium"
+      videoUrl: "https://www.youtube.com/watch?v=3N7zpOvStOA" // Replace with actual video URL
     }
   ];
 
@@ -73,14 +54,14 @@ const Education = () => {
       <p className="text-gray-600 mb-4 text-center">From critical skills to technical topics, find everything you need to develop professionally.</p>
       
       <div className="flex space-x-4 mb-8 overflow-x-auto">
-        <button className="bg-gray-200 px-4 py-2 rounded-full text-sm font-semibold text-gray-700">ChatGPT</button>
-        <button className="bg-gray-200 px-4 py-2 rounded-full text-sm font-semibold text-gray-700">Data Science</button>
-        <button className="bg-gray-200 px-4 py-2 rounded-full text-sm font-semibold text-gray-700">Python</button>
-        <button className="bg-gray-200 px-4 py-2 rounded-full text-sm font-semibold text-gray-700">Machine Learning</button>
-        <button className="bg-gray-200 px-4 py-2 rounded-full text-sm font-semibold text-gray-700">Deep Learning</button>
-        <button className="bg-gray-200 px-4 py-2 rounded-full text-sm font-semibold text-gray-700">AI</button>
-        <button className="bg-gray-200 px-4 py-2 rounded-full text-sm font-semibold text-gray-700">Statistics</button>
-        <button className="bg-gray-200 px-4 py-2 rounded-full text-sm font-semibold text-gray-700">NLP</button>
+        <button className="bg-[#A26B61] px-4 py-2 rounded-full text-sm font-semibold text-white">Breastfeeding Techniques</button>
+        <button className="bg-[#A26B61] px-4 py-2 rounded-full text-sm font-semibold text-white">Infant Care</button>
+        <button className="bg-[#A26B61] px-4 py-2 rounded-full text-sm font-semibold text-white">Postpartum Self-Care</button>
+        <button className="bg-[#A26B61] px-4 py-2 rounded-full text-sm font-semibold text-white">Nutrition and Meal Planning</button>
+        <button className="bg-[#A26B61] px-4 py-2 rounded-full text-sm font-semibold text-white">Sleep Strategies</button>
+        <button className="bg-[#A26B61] px-4 py-2 rounded-full text-sm font-semibold text-white">Communication and Relationship Skills</button>
+        <button className="bg-[#A26B61] px-4 py-2 rounded-full text-sm font-semibold text-white">Babywearing Techniques</button>
+        <button className="bg-[#A26B61] px-4 py-2 rounded-full text-sm font-semibold text-white">Support System</button>
         <FaArrowRight className="text-gray-500 self-center ml-2" />
       </div>
 
@@ -90,11 +71,7 @@ const Education = () => {
             key={index}
             image={course.image}
             title={course.title}
-            price={course.price}
-            originalPrice={course.originalPrice}
-            rating={course.rating}
-            reviews={course.reviews}
-            badge={course.badge}
+            videoUrl={course.videoUrl}
           />
         ))}
       </div>
