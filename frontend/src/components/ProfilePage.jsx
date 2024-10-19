@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { FaBell, FaCog, FaUserEdit } from 'react-icons/fa';
+import { FaBell, FaCog, FaUserEdit } from 'react-icons/fa';   // Importing icons to be used in the profile page
 
 const ProfilePage = () => {
+  // State to storm the user profile data
   const [formData, setFormData] = useState({
     race: '',
     ethnicity: '',
@@ -14,14 +15,19 @@ const ProfilePage = () => {
     housing_status: '',
   });
 
+  // Handler function to update the form data
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target; // Destructuring the name and value from the target object
     setFormData((prevState) => ({
       ...prevState,
-      [name]: value,
+      [name]: value, // Updating the form data with the new value
     }));
   };
 
+  /* This component displays a user profile page where users can view and edit their personal information.
+   It utilizes React's useState hook to manage form data, allowing users to input details such as race, 
+   ethnicity, gender, age, language, disability status, education level, employment status, and housing status */
+   
   return (
     <div className="min-h-screen flex flex-col items-center">
       <div className="w-full max-w-md p-6 bg-white rounded-lg mt-6">
