@@ -21,7 +21,6 @@ function Contact() {
         "message" : message,
         // chatHistory,
       });
-      console.log(response.data.reply);
       const botMessage = { sender: 'bot', text: response.data.reply };
       setChatHistory((prev) => [...prev, botMessage]);
     } catch (error) {
