@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+// The EditProfilePage component receives formData and setFormData as props for handling form data state.
 const EditProfilePage = ({ formData, setFormData }) => {
+  // Local state to manage form data locally before submitting.
   const [localFormData, setLocalFormData] = useState(formData);
+  // useNavigate hook from react-router-dom to programmatically navigate to another route.
   const navigate = useNavigate();
 
+  // handleInputChange updates the localFormData state when any input field changes.
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setLocalFormData((prevState) => ({
@@ -13,12 +17,14 @@ const EditProfilePage = ({ formData, setFormData }) => {
     }));
   };
 
+  // handleSubmit prevents the default form submission behavior, updates the global formData via setFormData, and navigates to the profile page.
   const handleSubmit = (e) => {
     e.preventDefault();
     setFormData(localFormData); 
     navigate('/profile'); 
   };
 
+  // Render a form interface for editing profile information.
   return (
     <div className="min-h-screen flex flex-col items-center pt-16 pb-20">
       <div className="w-full max-w-md p-6 bg-white rounded-lg mt-6">
