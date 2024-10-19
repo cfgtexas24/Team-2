@@ -56,6 +56,29 @@ except Exception as error:
 def hash_string(input_string):
     return hashlib.sha256(input_string.encode('utf-8')).hexdigest()
 
+@app.route('/submit-answers/<int:record_id>', methods=['POST'])
+def submit_answers(record_id):
+    data = request.json  # Assuming the form data is sent as JSON
+
+    try:
+        cursor = conn.cursor()
+
+        # Loop through each field and update the corresponding record
+        print(data.items())
+        for field_name, value in data.items():
+            # Dynamically update the corresponding field in the related table
+            update_query = sql.SQL("UPDATE client_info SET {field} = %s WHERE user_id = 15").format(
+                field=sql.Identifier(field_name)
+            )
+            cursor.execute(update_query, (value))
+
+        conn.commit()
+
+        return jsonify({"message": "Record updated successfully"}), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 @app.route('/signup', methods=['POST'])
 def signup():
     data = request.json

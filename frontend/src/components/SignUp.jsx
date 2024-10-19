@@ -20,7 +20,7 @@ function SignUp() {
           });
     
           // Check if the response contains valid data
-          if (response.status != 201) {
+          if (response.status !== 201) {
             alert('Invalid sign up'); // Display an alert for invalid login
           } else {
               navigate('/form');  // Replace with your actual user route

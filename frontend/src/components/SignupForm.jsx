@@ -1,4 +1,5 @@
-import React, { useState, useContext, useId, forwardRef } from "react";
+import React, { useState, useEffect, useContext, useId, forwardRef } from "react";
+import axios from 'axios';
 
 // Utility function to conditionally join class names
 const cn = (...classes) => {
@@ -64,7 +65,8 @@ const FormLabel = forwardRef(({ className, ...props }, ref) => {
 FormLabel.displayName = "FormLabel";
 
 // Form control component (using <input> directly)
-const FormControl = forwardRef(({ children, ...props }, ref) => {
+// Form control component (using <input> directly)
+const FormControl = forwardRef(({ onChange, ...props }, ref) => {
   const { formItemId, formMessageId } = useFormField();
   return (
     <input
@@ -72,11 +74,13 @@ const FormControl = forwardRef(({ children, ...props }, ref) => {
       id={formItemId}
       aria-describedby={formMessageId}
       className="w-full px-3 py-2 rounded-md border border-primary bg-white text-black focus:outline-none focus:border-primary"
+      onChange={onChange} // Make sure onChange is passed down properly
       {...props}
     />
   );
 });
 FormControl.displayName = "FormControl";
+
 
 // Form message component (for error messages)
 const FormMessage = forwardRef(({ className, children, ...props }, ref) => {
@@ -95,6 +99,7 @@ const FormMessage = forwardRef(({ className, children, ...props }, ref) => {
 FormMessage.displayName = "FormMessage";
 
 // Form component
+// Form component
 const Form = ({ onSubmit, children }) => {
   const [formData, setFormData] = useState({});
 
@@ -106,23 +111,23 @@ const Form = ({ onSubmit, children }) => {
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Prevent default form submission behavior
     if (onSubmit) {
-      onSubmit(formData);
+      onSubmit(formData); // Pass form data to parent component for handling
     }
   };
 
   return (
     <form
       onSubmit={handleSubmit}
-      className="p-6 space-y-6 bg-white rounded-lg shadow-lg" // Set inner form background color to white
+      className="p-6 space-y-6 bg-white rounded-lg shadow-lg"
     >
       {React.Children.map(children, (child) =>
-        React.cloneElement(child, { onChange: handleChange })
+        React.cloneElement(child, { onChange: child.props.onChange || handleChange })
       )}
       <button
         type="submit"
-        className="w-full px-4 py-2 mt-4 font-semibold text-white bg-primary rounded-md hover:bg-opacity-90 focus:ring-4 focus:ring-primary" // Set submit button color to primary
+        className="w-full px-4 py-2 mt-4 font-semibold text-white bg-primary rounded-md hover:bg-opacity-90 focus:ring-4 focus:ring-primary"
       >
         Submit
       </button>
@@ -130,54 +135,58 @@ const Form = ({ onSubmit, children }) => {
   );
 };
 
-// Default export for signup form example
-const SignupForm = () => {
-  const [error, setError] = useState(null);
-  const questions = [
-    { name: "race", label: "Race" },
-    { name: "ethnicity", label: "Ethnicity" },
-    { name: "gender", label: "Gender" },
-    { name: "age", label: "Age" },
-    { name: "nationality", label: "Nationality" },
-    { name: "language", label: "Preferred Language" },
-    { name: "religion", label: "Religion" },
-    { name: "sexual_orientation", label: "Sexual Orientation" },
-    { name: "disability", label: "Do you have a disability?" },
-    { name: "marital_status", label: "Marital Status" },
-    { name: "education_level", label: "Education Level" },
-    { name: "employment_status", label: "Employment Status" },
-    { name: "income_level", label: "Income Level" },
-    { name: "veteran_status", label: "Veteran Status" },
-    { name: "housing_status", label: "Housing Status" },
-    { name: "community_involvement", label: "Community Involvement" },
-    { name: "political_affiliation", label: "Political Affiliation" },
-    { name: "cultural_background", label: "Cultural Background" },
-    { name: "health_status", label: "Health Status" },
-  ]; // Expanded array of questions
+// Dynamic Signup Form Component
+const SignupForm = ({ recordId = 15 }) => {
+  const [error, setError] = useState(null); // This is the correct place to define setError
+  const [questions, setQuestions] = useState([]);
+
+  // Fetch the questions from the backend
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/questions")
+      .then((response) => {
+        setQuestions(response.data); // Populate questions state with data from backend
+      })
+      .catch((error) => {
+        console.error("Error fetching questions:", error);
+        setError("Error fetching questions.");
+      });
+  }, []);
 
   const handleSubmit = (formData) => {
     console.log("Form Data:", formData);
 
-    // Example validation for empty fields
     if (Object.values(formData).some((value) => !value)) {
       setError("All fields are required");
     } else {
       setError(null);
-      alert("Form submitted successfully!");
+
+      // Submit answers to the backend
+      axios
+        .post(`http://localhost:5000/submit-answers/${recordId}`, formData)
+        .then(() => {
+          alert("Form submitted successfully!");
+        })
+        .catch((error) => {
+          console.error("Error submitting form:", error);
+          setError("An error occurred while submitting the form.");
+        });
     }
   };
 
   return (
-    <div className="flex justify-center items-center bg-white pt-10"> {/* Added padding-top of 10 to create space */}
-      <div className="w-2/5"> {/* Set width to 2/5 of the screen */}
-        <h2 className="text-2xl font-bold text-black mb-4 text-center">Profile Information</h2> {/* Header for the form */}
+    <div className="flex justify-center items-center bg-white pt-10 py-20">
+      <div className="w-2/5">
+        <h2 className="text-2xl font-bold text-black mb-4 text-center">
+          Profile Information
+        </h2>
+        {error && <p className="text-red-500 text-center mb-4">{error}</p>}
         <Form onSubmit={handleSubmit}>
           {questions.map((question) => (
-            <FormField key={question.name} name={question.name}>
+            <FormField key={question.id} name={question.client_field_name}>
               <FormItem className="space-y-1">
-                <FormLabel>{question.label}</FormLabel>
-                <FormControl type="text" name={question.name} />
-                {error && <FormMessage>{error}</FormMessage>}
+                <FormLabel>{question.question}</FormLabel>
+                <FormControl type="text" name={question.client_field_name} />
               </FormItem>
             </FormField>
           ))}
