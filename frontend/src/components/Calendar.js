@@ -36,16 +36,16 @@ const Calendar = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 flex justify-center items-center">
-      <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-lg">
-        <h2 className="text-2xl font-bold mb-4 text-center">Appointment Reservation Page</h2>
+      <div className="bg-white shadow-lg rounded-lg p-12 w-full max-w-3xl"> {/* Increased max width and padding */}
+        <h2 className="text-4xl font-bold mb-4 text-center">Appointment Reservation Page</h2> {/* Increased font size */}
 
         <div className="mb-6">
-          <h3 className="text-lg font-medium">{`Select a Date & Time (${currentMonth} ${currentYear})`}</h3>
-          <div className="grid grid-cols-7 gap-4 mt-4">
+          <h3 className="text-xl font-medium">{`Select a Date & Time (${currentMonth} ${currentYear})`}</h3>
+          <div className="grid grid-cols-7 gap-6 mt-4"> {/* Increased gap for buttons */}
             {Array.from({ length: 30 }, (_, i) => i + 1).map((day) => (
               <button
                 key={day}
-                className={`p-2 rounded-lg text-center ${
+                className={`p-4 rounded-lg text-center text-xl ${ // Increased padding and text size
                   availableDates.includes(day)
                     ? selectedDate === day
                       ? 'bg-[#A26B61] text-white hover:bg-[#F4E8E7]' // Updated hover color for selected date
@@ -64,12 +64,12 @@ const Calendar = () => {
 
         {selectedDate && (
           <div className="mb-6">
-            <h3 className="text-lg font-medium">Available Times for {selectedDate} {currentMonth} {currentYear}</h3>
-            <div className="grid grid-cols-2 gap-4 mt-4">
+            <h3 className="text-xl font-medium">Available Times for {selectedDate} {currentMonth} {currentYear}</h3>
+            <div className="grid grid-cols-2 gap-6 mt-4"> {/* Increased gap for buttons */}
               {availableTimes.map((time) => (
                 <button
                   key={time}
-                  className={`p-2 rounded-lg text-center ${
+                  className={`p-4 rounded-lg text-center text-xl ${ // Increased padding and text size
                     selectedTime === time
                       ? 'bg-[#A26B61] text-white hover:bg-[#F4E8E7]' // Updated hover color for selected time
                       : 'bg-[#F4E8E7] hover:bg-[#A26B61]' // Updated hover color for available times
@@ -85,11 +85,11 @@ const Calendar = () => {
 
         {selectedDate && selectedTime && (
           <div className="mt-6">
-            <p className="text-center font-medium">
+            <p className="text-center font-medium text-xl">
               You have selected {selectedDate} {currentMonth} {currentYear} at {selectedTime}.
             </p>
             <button 
-              className="mt-4 w-full bg-[#A26B61] text-white py-2 rounded-lg hover:bg-[#F4E8E7]" // Updated confirm button hover color
+              className="mt-4 w-full bg-[#A26B61] text-white py-3 rounded-lg hover:bg-[#F4E8E7] text-lg" // Increased button padding and text size
               onClick={handleConfirmReservation}
             >
               Confirm Reservation
@@ -98,7 +98,7 @@ const Calendar = () => {
         )}
 
         {confirmationMessage && (
-          <div className="mt-4 text-center text-green-600 font-semibold">
+          <div className="mt-4 text-center text-green-600 font-semibold text-xl">
             {confirmationMessage} {/* Display the confirmation message */}
           </div>
         )}

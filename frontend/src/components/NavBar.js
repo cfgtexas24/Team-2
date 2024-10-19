@@ -2,28 +2,24 @@ import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope, faGraduationCap, faUser, faCalendar, faNewspaper } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
+import image from '../assets/image.png'; // Make sure to include the file extension
 
 function Navbar() {
   const [showNavbar, setShowNavbar] = useState(false);
 
   useEffect(() => {
     const handleMouseMove = (event) => {
-      // Get window height and mouse's Y position
       const windowHeight = window.innerHeight;
       const mouseY = event.clientY;
 
-      // If the mouse is within 100px of the bottom of the screen, show the navbar
-      if (windowHeight - mouseY < 100) {
-        setShowNavbar(true);
-      } else {
-        setShowNavbar(false);
-      }
+      // Show the navbar if the mouse is within 100px of the bottom of the screen
+      setShowNavbar(windowHeight - mouseY < 100);
     };
 
-    // Add event listener for mouse movement
+    // Add mousemove event listener
     window.addEventListener('mousemove', handleMouseMove);
 
-    // Cleanup the event listener on component unmount
+    // Cleanup event listener on component unmount
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
     };
@@ -31,14 +27,14 @@ function Navbar() {
 
   return (
     <div className="Nav">
-      {}
-      <header className="flex justify-between items-center px-8 py-4 fixed w-full top-0 z-10 bg-#6C5846 bg-opacity-50">
-        <div className="text-white text-xl font-bold">Client</div>
+      {/* Fixed Header */}
+      <header className="flex justify-between items-center px-8 py-4 fixed w-full top-0 z-10 bg-[#A26B61]"> {/* Correct background color syntax */}
+        <img src={image} alt="Logo" className="h-8" /> {/* Added alt text for accessibility and defined height */}
       </header>
 
-      {}
+      {/* Fixed Footer */}
       <footer
-        className={`fixed bottom-0 w-full bg-primary py-4 transition-transform duration-300 ${
+        className={`fixed bottom-0 w-full bg-[#A26B61] py-4 transition-transform duration-300 ${
           showNavbar ? 'translate-y-0' : 'translate-y-full'
         }`}
       >
@@ -75,6 +71,9 @@ function Navbar() {
           </Link>
         </nav>
       </footer>
+      
+      {/* Optional: Spacer to push content below the fixed header */}
+      <div className="pt-16"></div> {/* Adjust padding as needed */}
     </div>
   );
 }

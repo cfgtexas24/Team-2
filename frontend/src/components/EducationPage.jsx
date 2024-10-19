@@ -7,7 +7,7 @@ import courseImage4 from '../assets/video4.jpeg';
 
 const CourseCard = ({ image, title, videoUrl }) => {
   return (
-    <div className="bg-white rounded-lg shadow-lg overflow-hidden w-64 transition-transform duration-300 transform hover:scale-105 hover:shadow-xl">
+    <div className="bg-white rounded-lg shadow-lg overflow-hidden w-80 h-200 transition-transform duration-300 transform hover:scale-105 hover:shadow-xl">
       <a href={videoUrl} target="_blank" rel="noopener noreferrer">
         <div className="relative">
           <img 
