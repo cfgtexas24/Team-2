@@ -1,32 +1,14 @@
-import React, { useState } from 'react';
-import { FaBell, FaCog, FaUserEdit } from 'react-icons/fa';
+import React from 'react';
+import { FaUserEdit } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 
-const ProfilePage = () => {
-  // State to store the user profile data
-  const [formData, setFormData] = useState({
-    race: '',
-    ethnicity: '',
-    gender: '',
-    age: '',
-    language: '',
-    disability: '',
-    education_level: '',
-    employment_status: '',
-    housing_status: '',
-  });
+const ProfilePage = ({ formData }) => {
+  const navigate = useNavigate();
 
-  // Handler function to update the form data
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
+  const handleEditClick = () => {
+    navigate('/editProfilePage');
   };
 
-  /* This component displays a user profile page where users can view and edit their personal information.
-   It utilizes React's useState hook to manage form data, allowing users to input details such as race, 
-   ethnicity, gender, age, language, disability status, education level, employment status, and housing status */
   return (
     <div className="min-h-screen flex flex-col items-center pt-16 pb-20">
       <div className="w-full max-w-md p-6 bg-white rounded-lg mt-6">
@@ -43,31 +25,22 @@ const ProfilePage = () => {
           </div>
 
           <h2 className="mt-4 text-xl font-semibold">Puerto Rico</h2>
-          <p className="text-gray-500">youremail@domain.com | +01 234 567 89</p>
+          <p className="text-gray-500">{formData.email || 'youremail@domain.com'} | {formData.phone || '+01 234 567 89'}</p>
 
           <div className="mt-6 w-full">
-            <button className="w-full p-3 text-left bg-gray-50 rounded-lg mb-4 flex justify-between items-center">
+            <button
+              className="w-full p-3 text-left bg-gray-50 rounded-lg mb-4 flex justify-between items-center"
+              onClick={handleEditClick} 
+            >
               <span>Edit profile information</span>
               <FaUserEdit className="text-gray-500" />
             </button>
             <div className="mt-4">
-              <form>
-                {Object.keys(formData).map((field) => (
-                  <div className="mb-4" key={field}>
-                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor={field}>
-                      {field.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
-                    </label>
-                    <input
-                      type="text"
-                      id={field}
-                      name={field}
-                      value={formData[field]}
-                      onChange={handleInputChange}
-                      className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    />
-                  </div>
-                ))}
-              </form>
+              <p><strong>Race:</strong> {formData.race}</p>
+              <p><strong>Ethnicity:</strong> {formData.ethnicity}</p>
+              <p><strong>Gender:</strong> {formData.gender}</p>
+              <p><strong>Age:</strong> {formData.age}</p>
+              <p><strong>Language:</strong> {formData.language}</p>
             </div>
           </div>
         </div>
