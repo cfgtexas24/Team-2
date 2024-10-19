@@ -33,17 +33,17 @@ function App() {
     <Router>
       <div className="App">
         <header className="App-header">
-          <Navbar /> {/* Render the Navbar */}
+          <Navbar /> 
           <Routes>
-            <Route path="/" element={<SignUp />} /> {/* Default route */}
+            <Route path="/" element={<SignUp />} /> 
             <Route path="/signin" element={<SignIn />} />
-            <Route path="/calendar" element={<Calendar />} /> {/* Default route */}
-            <Route path="/education" element={<Education />} /> {/* Signup page */}
-            <Route path="/profile" element={<ProfilePage formData={formData} />} /> {/* Signup page */}
-            <Route path="/form" element={<SignupForm />} /> {/* Signup page */}
-            <Route path="/contact" element={<Contact />} /> {/* Signup page */}
+            <Route path="/calendar" element={<Calendar />} /> 
+            <Route path="/education" element={<Education />} /> 
+            <Route path="/profile" element={<ProfilePage formData={formData} />} />
+            <Route path="/form" element={<SignupForm />} />
+            <Route path="/contact" element={<Contact />} /> 
             <Route path="adminhome" element={<AdminHome/>}/>
-            <Route path="/editProfilePage" element={<EditProfilePage formData={formData} />}/>
+            <Route path="/editProfilePage" element={<EditProfilePage formData={formData} setFormData={setFormData}/>}/>
           </Routes>
         </header>
       </div>
