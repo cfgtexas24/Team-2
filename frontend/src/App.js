@@ -1,23 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import './output.css'; // Ensure the path is correct after compilation
+import AdminDashboard from './adminDashboard/page'; // Adjust the path as necessary
 
+// The App component
 function App() {
   return (
+    <Router>
+      <Routes>
+        {/* Define a route for the home page (or you can remove if not needed) */}
+        <Route path="/" element={<Home />} />
+        {/* Define the route for the Admin Dashboard */}
+        <Route path="/adminDashboard" element={<AdminDashboard />} />
+      </Routes>
+    </Router>
+  );
+}
+
+// Simple Home component (You can remove this or modify as needed)
+function Home() {
+  return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1 className="text-3xl font-bold text-center">Home Page</h1>
     </div>
   );
 }
