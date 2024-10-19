@@ -18,8 +18,7 @@ function Contact() {
     try {
       // Make a request to your backend to send the message to OpenAI
       const response = await axios.post('http://localhost:5000/chat', {
-        "message" : message,
-        // chatHistory,
+        message,
       });
       const botMessage = { sender: 'bot', text: response.data.reply };
       setChatHistory((prev) => [...prev, botMessage]);
@@ -30,8 +29,12 @@ function Contact() {
 
   return (
     <div className="flex justify-center items-center h-screen bg-white">
-      <div className="chatbox w-3/5 h-4/5 flex flex-col bg-white border border-gray-300 rounded-lg shadow-lg">
-        <div className="chat-history flex-1 overflow-y-auto p-4" style={{ backgroundColor: '#F2EBE3' }}>
+      <div className="w-3/5 h-4/5 flex flex-col bg-white border border-gray-300 rounded-lg shadow-lg">
+        
+        {/* Title Section */}
+        <h1 className="text-center text-2xl font-bold mb-4 text-[#A26B61]">Messaging</h1>
+
+        <div className="chatbox flex-1 overflow-y-auto p-4" style={{ backgroundColor: '#F2EBE3' }}>
           {chatHistory.map((chat, index) => (
             <div
               key={index}
