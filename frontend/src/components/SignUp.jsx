@@ -42,7 +42,7 @@ function SignUp() {
                 required
               />
             </div>
-            <Link to="/signup">
+            <Link to="/form">
             <button
               type="submit"
               className="w-full py-3 bg-purple-600 text-white rounded-lg font-bold hover:bg-purple-700"
