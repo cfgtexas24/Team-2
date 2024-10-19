@@ -26,7 +26,7 @@ const Calendar = () => {
   return (
     <div className="min-h-screen bg-gray-100 flex justify-center items-center">
       <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-lg">
-        <h2 className="text-2xl font-bold mb-4 text-center">Calendly Reservation Page</h2>
+        <h2 className="text-2xl font-bold mb-4 text-center">Appointment Reservation Page</h2>
 
         <div className="mb-6">
           <h3 className="text-lg font-medium">{`Select a Date & Time (${currentMonth} ${currentYear})`}</h3>

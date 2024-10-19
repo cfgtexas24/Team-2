@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'; // Import Link for navigation
 function Navbar() {
   return (
     <div className="Nav">
-    <header className="flex justify-between items-center px-8 py-4 fixed w-full top-0 z-10 bg-black bg-opacity-50">
+    <header className="flex justify-between items-center px-8 py-4 fixed w-full top-0 z-10 bg-#6C5846 bg-opacity-50">
         <div className="text-white text-xl font-bold">Client</div>
     </header>
     <footer className="fixed bottom-0 w-full bg-primary py-4">
