@@ -2,31 +2,42 @@ import React, { useState } from 'react';
 import { FaBell, FaCog, FaUserEdit } from 'react-icons/fa';
 
 const ProfilePage = () => {
-  // State to store the user profile data
   const [formData, setFormData] = useState({
-    race: '',
-    ethnicity: '',
-    gender: '',
-    age: '',
-    language: '',
-    disability: '',
-    education_level: '',
-    employment_status: '',
-    housing_status: '',
+    race: 'Hispanic or Latino',
+    ethnicity: 'Puerto Rican',
+    gender: 'Female',
+    age: '30',
+    language: 'Spanish, English',
+    disability: 'None',
+    education_level: 'Bachelor\'s Degree',
+    employment_status: 'Employed full-time',
+    housing_status: 'Own Home',
   });
 
-  // Handler function to update the form data
+  const [isEdited, setIsEdited] = useState({
+    race: false,
+    ethnicity: false,
+    gender: false,
+    age: false,
+    language: false,
+    disability: false,
+    education_level: false,
+    employment_status: false,
+    housing_status: false,
+  });
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevState) => ({
       ...prevState,
       [name]: value,
     }));
+    setIsEdited((prevState) => ({
+      ...prevState,
+      [name]: true,
+    }));
   };
 
-  /* This component displays a user profile page where users can view and edit their personal information.
-   It utilizes React's useState hook to manage form data, allowing users to input details such as race, 
-   ethnicity, gender, age, language, disability status, education level, employment status, and housing status */
   return (
     <div className="min-h-screen flex flex-col items-center pt-16 pb-20">
       <div className="w-full max-w-md p-6 bg-white rounded-lg mt-6">
@@ -63,7 +74,9 @@ const ProfilePage = () => {
                       name={field}
                       value={formData[field]}
                       onChange={handleInputChange}
-                      className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      className={`appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline ${
+                        isEdited[field] ? 'text-black' : 'text-gray-500'
+                      }`}
                     />
                   </div>
                 ))}
