@@ -24,7 +24,7 @@ const ProfilePage = ({ formData }) => {
             </button>
           </div>
 
-          <h2 className="mt-4 text-xl font-semibold">Puerto Rico</h2>
+          <h2 className="mt-4 text-xl font-semibold">Victor Valadez</h2>
           <p className="text-gray-500">{formData.email || 'youremail@domain.com'} | {formData.phone || '+01 234 567 89'}</p>
 
           <div className="mt-6 w-full">
