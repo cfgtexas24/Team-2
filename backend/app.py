@@ -349,10 +349,10 @@ def add_column_and_question():
     data = request.get_json()
     new_column_name = data.get('new_column_name')  # Get the new column name from the request
     question_text = data.get('question')  # Get the question text
-    user_id = data.get('user_id')  # Assuming you're providing user_id to link with client_info
+    question_type = data.get('type')  # Get the question type
 
-    if not new_column_name or not question_text or not user_id:
-        return jsonify({"error": "Missing required fields: new_column_name, question, or user_id"}), 400
+    if not new_column_name or not question_text or not question_type:
+        return jsonify({"error": "Missing required fields: new_column_name, question, or type"}), 400
 
     try:
         cursor = conn.cursor()
@@ -366,7 +366,7 @@ def add_column_and_question():
         INSERT INTO questions (question, client_field_name, type)
         VALUES (%s, %s, %s);
         """
-        cursor.execute(insert_question_query, (question_text, new_column_name, 'varchar'))
+        cursor.execute(insert_question_query, (question_text, new_column_name, question_type))
 
         # Commit the transaction
         conn.commit()
